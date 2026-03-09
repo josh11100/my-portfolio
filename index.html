@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Joshua Chung</title>
+<title>Joshua Chung | Data Science & Analytics</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,200;0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -24,7 +24,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:cen
 #scroll-container{position:relative;z-index:10;}
 section{min-height:100vh;display:flex;align-items:center;padding:8rem 4rem;position:relative;}
 .max-w{max-width:1100px;margin:0 auto;width:100%;}
-/* HERO */
 #hero{align-items:center;padding-bottom:4rem;}
 .hero-inner{display:grid;grid-template-columns:1fr auto;gap:4rem;align-items:center;max-width:1100px;margin:0 auto;width:100%;}
 .hero-label{font-size:.72rem;font-weight:400;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:2rem;opacity:0;animation:rise .9s .1s cubic-bezier(.16,1,.3,1) forwards;}
@@ -36,128 +35,51 @@ section{min-height:100vh;display:flex;align-items:center;padding:8rem 4rem;posit
 .cta-primary:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(255,255,255,.15);}
 .cta-ghost{display:inline-flex;align-items:center;gap:.4rem;color:rgba(255,255,255,.6);text-decoration:none;font-size:.78rem;font-weight:300;letter-spacing:.06em;text-transform:uppercase;transition:color .2s;}
 .cta-ghost:hover{color:#fff;}
-.cta-ghost svg{transition:transform .2s;}
-.cta-ghost:hover svg{transform:translate(3px,-3px);}
-.hero-photo-wrap{opacity:0;animation:rise .9s .35s cubic-bezier(.16,1,.3,1) forwards;flex-shrink:0;display:flex;align-items:center;}
-.hero-photo{width:440px;height:auto;border-radius:0;display:block;filter:none;border:none;}
-.scroll-hint{position:absolute;bottom:2.5rem;left:4rem;font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.38);display:flex;align-items:center;gap:.8rem;opacity:0;animation:rise .9s .9s cubic-bezier(.16,1,.3,1) forwards;}
-.scroll-line{width:40px;height:1px;background:rgba(255,255,255,.28);transform-origin:left;animation:growLine 1.2s 1.4s cubic-bezier(.16,1,.3,1) forwards;transform:scaleX(0);}
-/* Shared */
+.hero-photo-wrap{opacity:0;animation:rise .9s .35s cubic-bezier(.16,1,.3,1) forwards;flex-shrink:0;}
+.hero-photo{width:380px;height:auto;border-radius:20px;}
 .s-label{font-size:.68rem;letter-spacing:.25em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:4rem;display:flex;align-items:center;gap:1rem;}
 .s-label::before{content:'';display:block;width:30px;height:1px;background:rgba(255,255,255,.3);}
 .s-h2{font-family:var(--serif);font-size:clamp(2.4rem,5vw,4.5rem);font-weight:400;line-height:1.05;letter-spacing:-.02em;margin-bottom:4rem;color:#fff;}
 .s-h2 em{font-style:italic;color:rgba(255,255,255,.4);}
-/* ABOUT */
 #about{background:rgba(8,12,16,.7);backdrop-filter:blur(40px);}
-.about-top-row{display:flex;flex-direction:column;align-items:center;gap:2.5rem;margin-bottom:3.5rem;}
-.about-photo{width:300px;height:auto;border-radius:0;display:block;filter:none;border:none;margin:0 auto;}
-.about-story{max-width:820px;width:100%;text-align:left;}
+.about-story{max-width:820px;width:100%;}
 .about-story p{color:rgba(255,255,255,.75);font-size:.93rem;font-weight:300;line-height:1.9;margin-bottom:1.1rem;}
 .about-story p b{color:#fff;font-weight:500;}
-.about-story p em{color:rgba(110,231,255,.85);font-style:normal;}
 .about-bottom{display:grid;grid-template-columns:1fr 1fr;gap:4rem;margin-top:3rem;padding-top:3rem;border-top:1px solid rgba(255,255,255,.08);}
-.tag-cloud{display:flex;flex-wrap:wrap;gap:.45rem;}
-.chip{font-size:.72rem;font-weight:400;letter-spacing:.04em;padding:.3rem .85rem;border:1px solid rgba(255,255,255,.14);border-radius:100px;color:rgba(255,255,255,.6);transition:border-color .2s,color .2s;}
-.chip:hover{border-color:rgba(255,255,255,.4);color:#fff;}
+.chip{font-size:.72rem;padding:.3rem .85rem;border:1px solid rgba(255,255,255,.14);border-radius:100px;color:rgba(255,255,255,.6);display:inline-block;margin:0 .2rem .5rem 0;}
 .edu-block{border-top:1px solid rgba(255,255,255,.1);padding-top:2rem;margin-bottom:2rem;}
-.edu-school{font-size:1rem;font-weight:500;color:#fff;margin-bottom:.3rem;}
-.edu-deg{font-size:.8rem;color:rgba(255,255,255,.6);font-weight:300;margin-bottom:.2rem;}
-.edu-date{font-size:.7rem;color:rgba(255,255,255,.3);letter-spacing:.08em;}
-.golf-strip{padding:1.4rem 1.6rem;border:1px solid rgba(255,255,255,.1);border-radius:12px;display:flex;gap:1rem;align-items:flex-start;}
-.golf-emoji{font-size:1.5rem;}
-.golf-copy{font-size:.83rem;color:rgba(255,255,255,.65);font-weight:300;line-height:1.7;}
-.golf-copy b{color:#fff;font-weight:500;}
-/* EXPERIENCE */
-.exp-list{display:flex;flex-direction:column;}
-.exp-row{display:grid;grid-template-columns:210px 1fr;gap:3rem;padding:2.5rem 0;border-top:1px solid rgba(255,255,255,.08);transition:opacity .25s;}
-.exp-row:last-child{border-bottom:1px solid rgba(255,255,255,.08);}
-.exp-list:hover .exp-row{opacity:.3;}
-.exp-list:hover .exp-row:hover{opacity:1;}
-.exp-date{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:.4rem;}
-.exp-co{font-size:.8rem;color:rgba(255,255,255,.5);font-weight:300;}
-.exp-title{font-size:1.1rem;font-weight:500;margin-bottom:.8rem;letter-spacing:-.01em;color:#fff;}
-.exp-bullets{list-style:none;}
-.exp-bullets li{font-size:.85rem;color:rgba(255,255,255,.68);font-weight:300;line-height:1.75;padding-left:1.2rem;position:relative;margin-bottom:.25rem;}
-.exp-bullets li::before{content:'—';position:absolute;left:0;color:rgba(255,255,255,.22);font-size:.75rem;top:.05rem;}
-.exp-tag{display:inline-block;font-size:.65rem;letter-spacing:.06em;text-transform:uppercase;padding:.2rem .7rem;border:1px solid rgba(255,255,255,.12);border-radius:100px;color:rgba(255,255,255,.4);margin-top:.8rem;}
-/* PROJECTS */
+.edu-school{font-size:1rem;font-weight:500;color:#fff;}
+.edu-date{font-size:.7rem;color:rgba(255,255,255,.3);}
+.exp-row{display:grid;grid-template-columns:210px 1fr;gap:3rem;padding:2.5rem 0;border-top:1px solid rgba(255,255,255,.08);}
+.exp-title{font-size:1.1rem;font-weight:500;color:#fff;margin-bottom:0.5rem;}
+.exp-bullets{list-style:none;color:rgba(255,255,255,.68);font-size:.85rem;line-height:1.75;}
+.exp-bullets li{margin-bottom:0.4rem;padding-left:1rem;position:relative;}
+.exp-bullets li::before{content:'•';position:absolute;left:0;color:var(--accent);}
 #projects{background:rgba(8,12,16,.7);backdrop-filter:blur(40px);}
-.projects-top{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:3rem;flex-wrap:wrap;gap:1rem;}
-.gh-link{font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.5);text-decoration:none;display:flex;align-items:center;gap:.4rem;transition:color .2s;}
-.gh-link:hover{color:#fff;}
-.featured-project{margin-bottom:2rem;border:1px solid rgba(255,255,255,.1);transition:border-color .3s;}
-.featured-project:hover{border-color:rgba(255,255,255,.22);}
-.featured-header{display:flex;align-items:center;justify-content:space-between;padding:1.6rem 2rem;border-bottom:1px solid rgba(255,255,255,.08);flex-wrap:wrap;gap:1rem;}
-.featured-header-left{display:flex;align-items:center;gap:1.2rem;}
-.featured-badge{font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(110,231,255,.75);border:1px solid rgba(110,231,255,.2);border-radius:100px;padding:.2rem .75rem;}
-.featured-name{font-family:var(--serif);font-size:1.5rem;font-weight:400;color:#fff;letter-spacing:-.02em;}
-.featured-header-right{display:flex;gap:.8rem;align-items:center;flex-wrap:wrap;}
-.feat-btn{font-size:.72rem;letter-spacing:.07em;text-transform:uppercase;text-decoration:none;color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.14);padding:.5rem 1.1rem;border-radius:100px;transition:color .2s,border-color .2s;white-space:nowrap;}
-.feat-btn:hover{color:#fff;border-color:rgba(255,255,255,.4);}
-.feat-btn.live{background:rgba(110,231,255,.1);color:rgba(110,231,255,.9);border-color:rgba(110,231,255,.25);}
-.feat-btn.live:hover{background:rgba(110,231,255,.18);color:#fff;}
-.featured-desc{padding:1.2rem 2rem;font-size:.87rem;color:rgba(255,255,255,.65);font-weight:300;line-height:1.7;}
-.featured-tags{display:flex;flex-wrap:wrap;gap:.4rem;padding:0 2rem 1.4rem;}
-.featured-tag{font-size:.67rem;letter-spacing:.05em;padding:.22rem .72rem;border:1px solid rgba(255,255,255,.1);border-radius:100px;color:rgba(255,255,255,.45);}
-.app-embed-wrap{position:relative;background:#0e1117;border-top:1px solid rgba(255,255,255,.06);}
-.app-embed-bar{display:flex;align-items:center;justify-content:space-between;padding:.65rem 1.2rem;background:#0e1117;border-bottom:1px solid rgba(255,255,255,.05);}
-.embed-dots{display:flex;gap:.4rem;}
-.embed-dot{width:9px;height:9px;border-radius:50%;}
-.embed-url{font-size:.68rem;color:rgba(255,255,255,.28);font-family:monospace;flex:1;text-align:center;padding:0 1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.embed-open{font-size:.65rem;color:rgba(110,231,255,.6);text-decoration:none;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;transition:color .2s;}
-.embed-open:hover{color:rgba(110,231,255,1);}
-.app-iframe-container{position:relative;width:100%;height:580px;overflow:hidden;}
-.app-iframe-container iframe{width:100%;height:100%;border:none;display:block;}
-.iframe-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(8,12,16,.92);backdrop-filter:blur(8px);cursor:pointer;transition:opacity .3s;z-index:10;}
-.iframe-overlay.hidden{opacity:0;pointer-events:none;}
-.overlay-icon{font-size:2.5rem;margin-bottom:1rem;}
-.overlay-title{font-family:var(--serif);font-size:1.4rem;color:#fff;margin-bottom:.5rem;}
-.overlay-sub{font-size:.82rem;color:rgba(255,255,255,.5);font-weight:300;margin-bottom:1.8rem;text-align:center;max-width:280px;line-height:1.6;}
-.overlay-btn{display:inline-flex;align-items:center;gap:.5rem;background:#fff;color:var(--bg);font-size:.78rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;padding:.75rem 1.8rem;border-radius:100px;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s;}
-.overlay-btn:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(255,255,255,.15);}
-.proj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:1px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.07);}
-.proj-card{background:var(--bg);padding:2.2rem;transition:background .25s;cursor:pointer;text-decoration:none;color:inherit;display:block;}
-.proj-card:hover{background:rgba(255,255,255,.04);}
-.proj-card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.2rem;}
-.proj-lang{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:.4rem;}
-.lang-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
-.proj-arrow{color:rgba(255,255,255,.35);font-size:1rem;transition:transform .2s,color .2s;}
-.proj-card:hover .proj-arrow{transform:translate(3px,-3px);color:#fff;}
-.proj-name{font-size:1.05rem;font-weight:500;margin-bottom:.6rem;letter-spacing:-.01em;color:#fff;}
-.proj-desc{font-size:.83rem;color:rgba(255,255,255,.62);font-weight:300;line-height:1.7;margin-bottom:1.2rem;}
-.proj-tags{display:flex;flex-wrap:wrap;gap:.4rem;}
-.proj-tag{font-size:.65rem;letter-spacing:.05em;padding:.2rem .65rem;border:1px solid rgba(255,255,255,.1);border-radius:100px;color:rgba(255,255,255,.35);}
-.proj-stars{font-size:.72rem;color:rgba(255,255,255,.45);margin-top:.7rem;}
-.loading-row{grid-column:1/-1;padding:3rem;display:flex;align-items:center;gap:1rem;font-size:.8rem;color:rgba(255,255,255,.4);font-weight:300;}
-.spin{width:16px;height:16px;border:1px solid rgba(255,255,255,.12);border-top-color:rgba(255,255,255,.5);border-radius:50%;animation:spin .7s linear infinite;}
-/* CONTACT */
-.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:start;}
-.contact-blurb{font-size:.92rem;color:rgba(255,255,255,.68);font-weight:300;line-height:1.85;margin-bottom:3rem;}
-.contact-links{display:flex;flex-direction:column;}
-.c-link{display:flex;justify-content:space-between;align-items:center;padding:1.2rem 0;border-top:1px solid rgba(255,255,255,.08);text-decoration:none;color:rgba(255,255,255,.6);font-size:.85rem;font-weight:300;transition:color .2s;}
-.c-link:last-child{border-bottom:1px solid rgba(255,255,255,.08);}
-.c-link:hover{color:#fff;}
-.c-link span{font-size:.8rem;opacity:.35;transition:opacity .2s,transform .2s;}
-.c-link:hover span{opacity:1;transform:translate(3px,-3px);}
-.stack-label{font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:1.2rem;}
-.stack-row{display:flex;flex-wrap:wrap;gap:.45rem;margin-bottom:2.5rem;}
-footer{position:relative;z-index:10;border-top:1px solid rgba(255,255,255,.08);padding:1.8rem 4rem;display:flex;justify-content:space-between;align-items:center;font-size:.72rem;color:rgba(255,255,255,.38);font-weight:300;letter-spacing:.05em;}
-@keyframes rise{from{opacity:0;transform:translateY(28px);}to{opacity:1;transform:translateY(0);}}
-@keyframes growLine{to{transform:scaleX(1);}}
-@keyframes spin{to{transform:rotate(360deg);}}
-.reveal{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1);}
+.featured-project{margin-bottom:3rem;border:1px solid rgba(255,255,255,.1);border-radius:12px;overflow:hidden;}
+.featured-header{padding:1.6rem 2rem;display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,0.02);}
+.featured-name{font-family:var(--serif);font-size:1.5rem;color:#fff;}
+.feat-btn{font-size:.72rem;text-decoration:none;color:#fff;border:1px solid rgba(255,255,255,0.2);padding:.5rem 1rem;border-radius:100px;}
+.app-embed-bar{display:flex;align-items:center;padding:.65rem 1.2rem;background:#0e1117;border-bottom:1px solid rgba(255,255,255,.05);font-size:.68rem;color:rgba(255,255,255,.3);}
+.app-iframe-container{position:relative;width:100%;height:600px;background:#0e1117;}
+.app-iframe-container iframe{width:100%;height:100%;border:none;}
+.iframe-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(8,12,16,0.95);z-index:10;text-align:center;}
+.iframe-overlay.hidden{display:none;}
+.overlay-btn{background:#fff;color:#000;padding:.8rem 2rem;border-radius:100px;border:none;cursor:pointer;font-weight:bold;text-transform:uppercase;font-size:0.75rem;}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;margin-top:4rem;}
+.c-link{display:flex;justify-content:space-between;padding:1.2rem 0;border-top:1px solid rgba(255,255,255,.1);text-decoration:none;color:rgba(255,255,255,0.7);}
+footer{padding:4rem;border-top:1px solid rgba(255,255,255,0.1);font-size:0.7rem;color:rgba(255,255,255,0.3);}
+@keyframes rise{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.reveal{opacity:0;transform:translateY(20px);transition:all .8s ease-out;}
 .reveal.in{opacity:1;transform:none;}
-::-webkit-scrollbar{width:3px;}
-::-webkit-scrollbar-track{background:var(--bg);}
-::-webkit-scrollbar-thumb{background:rgba(255,255,255,.14);}
-@media(max-width:900px){.hero-inner{grid-template-columns:1fr;}.hero-photo-wrap{display:none;}.about-bottom{grid-template-columns:1fr;gap:2.5rem;}.app-iframe-container{height:420px;}}
-@media(max-width:768px){nav{padding:1.2rem 1.5rem;}.nav-links{display:none;}section{padding:5rem 1.5rem;}#hero{padding-bottom:5rem;}.scroll-hint{left:1.5rem;}.contact-grid{grid-template-columns:1fr;gap:3rem;}.exp-row{grid-template-columns:1fr;gap:1rem;}footer{padding:1.5rem;flex-direction:column;gap:.5rem;text-align:center;}.app-iframe-container{height:360px;}}
+@media(max-width:768px){.hero-inner,.about-bottom,.exp-row,.contact-grid{grid-template-columns:1fr;}nav{padding:1rem;}section{padding:4rem 1.5rem;}.hero-photo-wrap{display:none;}}
 </style>
 </head>
 <body>
 <canvas id="three-canvas"></canvas>
 <div id="cur"></div>
 <div id="cur-trail"></div>
+
 <nav>
   <a href="#hero" class="nav-logo">Joshua Chung</a>
   <ul class="nav-links">
@@ -167,311 +89,185 @@ footer{position:relative;z-index:10;border-top:1px solid rgba(255,255,255,.08);p
     <li><a href="#contact">Contact</a></li>
   </ul>
 </nav>
+
 <div id="scroll-container">
-
-<!-- HERO -->
-<section id="hero">
-  <div class="hero-inner">
-    <div class="hero-text">
-      <p class="hero-label">Statistics &amp; Data Science — UCSB &nbsp;·&nbsp; Class of 2027</p>
-      <h1 class="hero-h1">Data Scientist<br><em>&amp; Developer</em></h1>
-      <p class="hero-bio">I build intelligent systems at the intersection of machine learning, data engineering, and analytics. Former D1 athlete turned data-driven problem solver.</p>
-      <div class="hero-ctas">
-        <a href="#projects" class="cta-primary">View Projects</a>
-        <a href="https://github.com/josh11100" target="_blank" class="cta-ghost">GitHub <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 9.5L9.5 2.5M9.5 2.5H3.5M9.5 2.5V8.5" stroke="currentColor" stroke-width="1.2"/></svg></a>
-        <a href="https://www.linkedin.com/in/joshua-chung858/" target="_blank" class="cta-ghost">LinkedIn <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 9.5L9.5 2.5M9.5 2.5H3.5M9.5 2.5V8.5" stroke="currentColor" stroke-width="1.2"/></svg></a>
-      </div>
-    </div>
-    <div class="hero-photo-wrap">
-      <img class="hero-photo" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgICAgMCAgIDAwMDBAYEBAQEBAgGBgUGCQgKCgkICQkKDA8MCgsOCwkJDRENDg8QEBEQCgwSExIQEw8QEBD/2wBDAQMDAwQDBAgEBAgQCwkLEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBD/wAARCAInAz8DASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD8x6KKK6DIKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACilwaNpoASinbDRsNADaKdsNJtNACUUYNFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRShSaAEpcGpViJ7VMlqx7UrgVQhNSLCT2rQi092/hq9b6S7H7pouBjpase1TpYsf4a6a00B2x8la1v4aZsfu/0pAcONOf+7S/2a/8Ad/SvRo/CUxGfs7H8KefCM4HNu3/fNK4WPNDpzj+Go2sWH8NekSeFnXrEfyqlceG2AP7s/lRcLHnr2zDtULxEdq7K70Jlz8lY11pjJn5adwMIqRSVcmtip6VWZCKoBlFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABTkXJFTR25Y9KtQ2BbrSbA//9k=" alt="Joshua Chung">
-    </div>
-  </div>
-  <div class="scroll-hint"><span class="scroll-line"></span>Scroll</div>
-</section>
-
-<!-- ABOUT -->
-<section id="about">
-  <div class="max-w">
-    <p class="s-label reveal">About</p>
-    <div class="about-top-row reveal">
-      <div class="about-story">
-        <p>Hi, I'm Joshua &#8212; a <b>3rd year at UC Santa Barbara</b>. I started in Computer Science, but recently made the move to <b>Statistics and Data Science</b>. That switch wasn't a detour &#8212; it reflects how my thinking has evolved.</p>
-        <p>Growing up, I spent my childhood <b>helping my immigrant parents navigate technology</b> &#8212; translating interfaces, troubleshooting devices, bridging the gap between them and a digital world that wasn't built with them in mind. That shaped why I got into tech: <em>to build tools that make everyday life easier for real people.</em></p>
-        <p>But the deeper I went, the more I realized what excited me wasn't just writing software &#8212; it was <b>analyzing data, uncovering insights, and using evidence to guide better decisions.</b> Data Science lets me blend engineering and analytics to build solutions that actually help people like my parents.</p>
-        <p>Right now I work as a <b>Data Journalist &amp; Analyst at the Daily Nexus</b>, UCSB's student news network, where I dig into large datasets and build visualizations that power investigative stories. I'm excited about opportunities where I can keep building <b>reliable, data-driven systems</b> that solve meaningful problems.</p>
-      </div>
-    </div>
-    <div class="about-bottom">
-      <div>
-        <p class="stack-label" style="margin-bottom:1.2rem">Technical skills</p>
-        <div class="tag-cloud">
-          <span class="chip">Python</span><span class="chip">SQL</span><span class="chip">C++</span><span class="chip">R</span><span class="chip">JavaScript</span><span class="chip">TypeScript</span><span class="chip">Scikit-learn</span><span class="chip">Pandas</span><span class="chip">NumPy</span><span class="chip">Flask</span><span class="chip">React</span><span class="chip">PostgreSQL</span><span class="chip">Docker</span><span class="chip">Streamlit</span><span class="chip">BeautifulSoup</span><span class="chip">ETL Pipelines</span><span class="chip">NLP</span><span class="chip">K-Means</span>
-        </div>
-      </div>
-      <div>
-        <div class="edu-block">
-          <div class="edu-school">UC Santa Barbara</div>
-          <div class="edu-deg">B.S. Statistics &amp; Data Science</div>
-          <div class="edu-date">Sept 2023 &#8211; Present &nbsp;&#183;&nbsp; Previously: Computer Science</div>
-        </div>
-        <div class="golf-strip">
-          <div class="golf-emoji">&#9971;</div>
-          <div class="golf-copy"><b>Division I NCAA Golfer</b> &#8212; Starting 5<br>UCSB Men's Golf &#183; Big West Conference &#183; 2023&#8211;2025<br><span style="font-size:.75rem;color:rgba(255,255,255,.38);">Balanced D1 athletics with a rigorous STEM curriculum.</span></div>
+  <section id="hero">
+    <div class="hero-inner">
+      <div class="hero-text">
+        <p class="hero-label">Statistics &amp; Data Science — UCSB &nbsp;·&nbsp; Class of 2027</p>
+        <h1 class="hero-h1">Data Scientist<br><em>&amp; Developer</em></h1>
+        <p class="hero-bio">I build intelligent systems at the intersection of machine learning, data engineering, and analytics. Student-athlete turned data-driven problem solver.</p>
+        <div class="hero-ctas">
+          <a href="#projects" class="cta-primary">View Projects</a>
+          <a href="https://github.com/josh11100" target="_blank" class="cta-ghost">GitHub</a>
+          <a href="https://www.linkedin.com/in/joshua-chung858/" target="_blank" class="cta-ghost">LinkedIn</a>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- EXPERIENCE -->
-<section id="experience">
-  <div class="max-w">
-    <p class="s-label reveal">Experience</p>
-    <h2 class="s-h2 reveal">Where I've <em>worked</em></h2>
-    <div class="exp-list reveal">
-      <div class="exp-row">
-        <div><div class="exp-date">Jan 2026 &#8211; Present</div><div class="exp-co">Daily Nexus &#183; UCSB</div></div>
+  <section id="about">
+    <div class="max-w">
+      <p class="s-label reveal">About</p>
+      <div class="about-story reveal">
+        <p>Hi, I'm Joshua — a 3rd year at UC Santa Barbara. My background in Computer Science combined with a focus on <b>Statistics and Data Science</b> allows me to bridge the gap between complex engineering and actionable insights.</p>
+        <p>Right now, I am a <b>Data Analyst at the Daily Nexus</b>, where I transform large public datasets into visual stories about housing, campus policy, and student life. I'm passionate about building <b>ETL pipelines</b> and <b>interactive dashboards</b> that make data accessible and useful for everyone.</p>
+      </div>
+      <div class="about-bottom reveal">
         <div>
-          <div class="exp-title">Data Analyst &#8212; Data Journalism</div>
-          <ul class="exp-bullets">
-            <li>Analyze, clean, and validate public datasets supporting data-driven journalism on housing, campus trends, and local policy.</li>
-            <li>Create visualizations using Datawrapper, SQL, and Python to communicate insights to a broad, non-technical audience.</li>
-            <li>Collaborate with editors and reporters to translate analytical findings into publishable articles and interactive graphics.</li>
-          </ul>
-          <span class="exp-tag">Python &#183; SQL &#183; Datawrapper</span>
+          <p style="color:var(--accent); font-size: 0.7rem; text-transform: uppercase; margin-bottom: 1rem;">Technical Stack</p>
+          <div class="tag-cloud">
+            <span class="chip">Python</span><span class="chip">SQL</span><span class="chip">R</span><span class="chip">C++</span><span class="chip">Tableau</span><span class="chip">Scikit-learn</span><span class="chip">Pandas</span><span class="chip">Flask</span><span class="chip">PostgreSQL</span><span class="chip">Streamlit</span>
+          </div>
+        </div>
+        <div>
+          <div class="edu-block">
+            <div class="edu-school">University of California, Santa Barbara</div>
+            <div class="edu-deg">B.S. Statistics &amp; Data Science</div>
+            <div class="edu-date">2023 — Present</div>
+          </div>
         </div>
       </div>
-      <div class="exp-row">
-        <div><div class="exp-date">Jun &#8211; Sep 2024</div><div class="exp-co">ZFaceMelon Startup</div></div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="max-w">
+      <p class="s-label reveal">Experience</p>
+      <h2 class="s-h2 reveal">Where I've <em>worked</em></h2>
+      <div class="exp-row reveal">
+        <div><div class="exp-date">Jan 2026 – Present</div><div style="color:var(--muted)">Daily Nexus</div></div>
+        <div>
+          <div class="exp-title">Data Analyst & Journalist</div>
+          <ul class="exp-bullets">
+            <li>Automating data collection and cleaning for campus-wide investigative reports.</li>
+            <li>Developing interactive data visualizations to communicate complex trends to the student body.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="exp-row reveal">
+        <div><div class="exp-date">Jun – Sep 2024</div><div style="color:var(--muted)">ZFaceMelon</div></div>
         <div>
           <div class="exp-title">Full-Stack Developer Intern</div>
           <ul class="exp-bullets">
-            <li>Built a secure subscription-based payment &amp; auth system using Stripe, enabling tiered access to premium analytics features.</li>
-            <li>Developed Flask + PostgreSQL backend for GitHub analytics, supporting scalable multi-tier user authorization.</li>
-            <li>Designed normalized DB schemas and automated ETL pipelines to ingest, clean, and transform GitHub data.</li>
+            <li>Engineered a subscription payment system using Stripe and Flask.</li>
+            <li>Built ETL pipelines to process GitHub metadata for developer analytics.</li>
           </ul>
-          <span class="exp-tag">Flask &#183; PostgreSQL &#183; Stripe &#183; ETL</span>
-        </div>
-      </div>
-      <div class="exp-row">
-        <div><div class="exp-date">Sep 2023 &#8211; Jun 2025</div><div class="exp-co">UCSB Athletics</div></div>
-        <div>
-          <div class="exp-title">Division I Student-Athlete &#8212; Men's Golf</div>
-          <ul class="exp-bullets">
-            <li>Earned a starting position as a freshman and contributed to UCSB's advancement in the Big West Conference.</li>
-            <li>Competed at the D1 level while maintaining a rigorous STEM course load, developing elite time management and composure under pressure.</li>
-            <li>Represented UCSB in conference tournaments, applying the same analytical and disciplined mindset on and off the course.</li>
-          </ul>
-          <span class="exp-tag">Leadership &#183; Big West Conference &#183; Starting 5</span>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- PROJECTS -->
-<section id="projects">
-  <div class="max-w">
-    <div class="projects-top reveal">
-      <div>
-        <p class="s-label" style="margin-bottom:1rem">Projects</p>
-        <h2 class="s-h2" style="margin-bottom:0">What I've <em>built</em></h2>
-      </div>
-      <a href="https://github.com/josh11100" target="_blank" class="gh-link">All repos <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 9.5L9.5 2.5M9.5 2.5H3.5M9.5 2.5V8.5" stroke="currentColor" stroke-width="1.2"/></svg></a>
-    </div>
+  <section id="projects">
+    <div class="max-w">
+      <p class="s-label reveal">Projects</p>
+      <h2 class="s-h2 reveal">Featured <em>Work</em></h2>
 
-    <!-- ✅ FIXED: Gaucho Insights — correct URL, no double https:// -->
-    <div class="featured-project reveal">
-      <div class="featured-header">
-        <div class="featured-header-left"><span class="featured-badge">Featured &#183; Live App</span><span class="featured-name">Gaucho Insights</span></div>
-        <div class="featured-header-right">
-          <a href="https://gaucho-insights.streamlit.app/" target="_blank" class="feat-btn live">&#8599; Open Live App</a>
-          <a href="https://github.com/josh11100" target="_blank" class="feat-btn">GitHub</a>
+      <div class="featured-project reveal">
+        <div class="featured-header">
+          <div class="featured-name">Gaucho Insights</div>
+          <a href="https://gaucho-insights.streamlit.app/" target="_blank" class="feat-btn">Live Site</a>
         </div>
-      </div>
-      <div class="featured-desc">A Streamlit analytics dashboard delivering data-driven insights about UCSB &#8212; housing markets, course trends, and campus data visualizations. Built with automated ETL pipelines and SQL-backed datasets.</div>
-      <div class="featured-tags"><span class="featured-tag">Python</span><span class="featured-tag">Streamlit</span><span class="featured-tag">ETL</span><span class="featured-tag">SQL</span><span class="featured-tag">Data Visualization</span><span class="featured-tag">Pandas</span></div>
-      <div class="app-embed-wrap">
         <div class="app-embed-bar">
-          <div class="embed-dots"><div class="embed-dot" style="background:#ff5f57"></div><div class="embed-dot" style="background:#febc2e"></div><div class="embed-dot" style="background:#28c840"></div></div>
-          <span class="embed-url">gaucho-insights.streamlit.app</span>
-          <a href="https://gaucho-insights.streamlit.app/" target="_blank" class="embed-open">Open &#8599;</a>
+          <span>gaucho-insights.streamlit.app</span>
         </div>
         <div class="app-iframe-container" id="gi-container">
           <div class="iframe-overlay" id="gi-overlay">
-            <div class="overlay-icon">&#128202;</div>
-            <div class="overlay-title">Gaucho Insights</div>
-            <div class="overlay-sub">Interactive UCSB data dashboard. Click to load the live app.</div>
+            <p style="color:#fff; margin-bottom:1rem;">Interactive Data Dashboard</p>
             <button class="overlay-btn" onclick="loadIframe('gi')">Launch App</button>
           </div>
-          <iframe id="gi-iframe" src="" title="Gaucho Insights" loading="lazy"></iframe>
+          <iframe id="gi-iframe" src="" loading="lazy"></iframe>
         </div>
       </div>
-    </div>
 
-    <!-- GauchoGPT (unchanged) -->
-    <div class="featured-project reveal">
-      <div class="featured-header">
-        <div class="featured-header-left"><span class="featured-badge">Featured &#183; Live App</span><span class="featured-name">GauchoGPT</span></div>
-        <div class="featured-header-right">
-          <a href="https://ucsbapper-tpyzuus5u7serdjqv8tsnk.streamlit.app/" target="_blank" class="feat-btn live">&#8599; Open Live App</a>
-          <a href="https://github.com/josh11100" target="_blank" class="feat-btn">GitHub</a>
+      <div class="featured-project reveal">
+        <div class="featured-header">
+          <div class="featured-name">GauchoGPT</div>
+          <a href="https://ucsbapper-tpyzuus5u7serdjqv8tsnk.streamlit.app/" target="_blank" class="feat-btn">Live Site</a>
         </div>
-      </div>
-      <div class="featured-desc">A modular AI assistant for UCSB students &#8212; aggregating housing data, academic planning, and professor insights using ML. Features K-Means clustering, TF-IDF NLP pipelines, sentiment analysis, and content-based recommendations backed by automated ETL.</div>
-      <div class="featured-tags"><span class="featured-tag">Python</span><span class="featured-tag">Streamlit</span><span class="featured-tag">Machine Learning</span><span class="featured-tag">NLP &#183; TF-IDF</span><span class="featured-tag">K-Means</span><span class="featured-tag">Sentiment Analysis</span><span class="featured-tag">ETL Pipelines</span></div>
-      <div class="app-embed-wrap">
         <div class="app-embed-bar">
-          <div class="embed-dots"><div class="embed-dot" style="background:#ff5f57"></div><div class="embed-dot" style="background:#febc2e"></div><div class="embed-dot" style="background:#28c840"></div></div>
-          <span class="embed-url">ucsbapper-tpyzuus5u7serdjqv8tsnk.streamlit.app</span>
-          <a href="https://ucsbapper-tpyzuus5u7serdjqv8tsnk.streamlit.app/" target="_blank" class="embed-open">Open &#8599;</a>
+          <span>gauchogpt.streamlit.app</span>
         </div>
         <div class="app-iframe-container" id="gg-container">
           <div class="iframe-overlay" id="gg-overlay">
-            <div class="overlay-icon">&#129302;</div>
-            <div class="overlay-title">GauchoGPT</div>
-            <div class="overlay-sub">AI-powered UCSB assistant. Click to load the live app.</div>
+            <p style="color:#fff; margin-bottom:1rem;">AI Academic Assistant</p>
             <button class="overlay-btn" onclick="loadIframe('gg')">Launch App</button>
           </div>
-          <iframe id="gg-iframe" src="" title="GauchoGPT" loading="lazy"></iframe>
+          <iframe id="gg-iframe" src="" loading="lazy"></iframe>
         </div>
       </div>
     </div>
+  </section>
 
-    <div style="margin-top:.5rem"><p class="s-label" style="margin-bottom:1.5rem;font-size:.65rem;">Other Projects</p></div>
-    <div class="proj-grid" id="proj-grid"><div class="loading-row"><div class="spin"></div>Fetching from GitHub&#8230;</div></div>
-  </div>
-</section>
-
-<!-- CONTACT -->
-<section id="contact">
-  <div class="max-w">
-    <p class="s-label reveal">Contact</p>
-    <h2 class="s-h2 reveal">Let's <em>connect</em></h2>
-    <div class="contact-grid">
-      <div class="reveal">
-        <p class="contact-blurb">I'm open to internships, research roles, and interesting projects in data science, ML engineering, or full-stack development. Don't hesitate to reach out.</p>
-        <div class="contact-links">
-          <a href="mailto:joshuachung@ucsb.edu" class="c-link">joshuachung@ucsb.edu <span>&#8599;</span></a>
-          <a href="https://github.com/josh11100" target="_blank" class="c-link">github.com/josh11100 <span>&#8599;</span></a>
-          <a href="https://www.linkedin.com/in/joshua-chung858/" target="_blank" class="c-link">linkedin.com/in/joshua-chung858 <span>&#8599;</span></a>
-          <a href="tel:8087455231" class="c-link">808-745-5231 <span>&#8599;</span></a>
-        </div>
-      </div>
-      <div class="reveal">
-        <p class="stack-label">Core stack</p>
-        <div class="stack-row"><span class="chip">Python</span><span class="chip">SQL</span><span class="chip">C++</span><span class="chip">R</span><span class="chip">TypeScript</span><span class="chip">Flask</span><span class="chip">React</span><span class="chip">PostgreSQL</span><span class="chip">Docker</span><span class="chip">Streamlit</span><span class="chip">Scikit-learn</span></div>
-        <p class="stack-label">Coursework</p>
-        <div class="stack-row"><span class="chip">Machine Learning</span><span class="chip">Data Structures &amp; Algorithms</span><span class="chip">Linear Algebra</span><span class="chip">Probability &amp; Statistics</span><span class="chip">Python &amp; R</span></div>
+  <section id="contact">
+    <div class="max-w">
+      <p class="s-label reveal">Contact</p>
+      <h2 class="s-h2 reveal">Let's <em>connect</em></h2>
+      <div class="contact-grid reveal">
+        <a href="mailto:joshuachung@ucsb.edu" class="c-link">Email <span>&#8599;</span></a>
+        <a href="https://linkedin.com/in/joshua-chung858/" target="_blank" class="c-link">LinkedIn <span>&#8599;</span></a>
+        <a href="https://github.com/josh11100" target="_blank" class="c-link">GitHub <span>&#8599;</span></a>
       </div>
     </div>
-  </div>
-</section>
+  </section>
+
+  <footer>
+    <p>&copy; 2026 Joshua Chung. Built with Three.js & Passion.</p>
+  </footer>
 </div>
-<footer><span>Joshua Chung &#8212; Statistics &amp; Data Science, UCSB</span><span>joshuachung@ucsb.edu</span></footer>
+
 <script>
-// Cursor
-const cur=document.getElementById('cur'),trail=document.getElementById('cur-trail');
-let mx=0,my=0,tx=0,ty=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
-(function loop(){tx+=(mx-tx)*.13;ty+=(my-ty)*.13;trail.style.left=tx+'px';trail.style.top=ty+'px';requestAnimationFrame(loop);})();
-document.querySelectorAll('a,button').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{trail.style.width='52px';trail.style.height='52px';cur.style.opacity='0';});
-  el.addEventListener('mouseleave',()=>{trail.style.width='32px';trail.style.height='32px';cur.style.opacity='1';});
+// Cursor Logic
+const cur = document.getElementById('cur');
+const trail = document.getElementById('cur-trail');
+document.addEventListener('mousemove', e => {
+  cur.style.left = trail.style.left = e.clientX + 'px';
+  cur.style.top = trail.style.top = e.clientY + 'px';
 });
 
-// ✅ FIXED: Gaucho Insights uses correct URL (no double https://)
-const iframeSrcs={
-  gi:'https://gaucho-insights.streamlit.app/?embed=true',
-  gg:'https://ucsbapper-tpyzuus5u7serdjqv8tsnk.streamlit.app/?embed=true'
+// Iframe Loading Logic
+const iframeSrcs = {
+  gi: 'https://gaucho-insights.streamlit.app/?embed=true',
+  gg: 'https://ucsbapper-tpyzuus5u7serdjqv8tsnk.streamlit.app/?embed=true'
 };
-function loadIframe(id){document.getElementById(id+'-iframe').src=iframeSrcs[id];document.getElementById(id+'-overlay').classList.add('hidden');}
 
-// Three.js
-const renderer=new THREE.WebGLRenderer({canvas:document.getElementById('three-canvas'),antialias:true,alpha:true});
-renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
-renderer.setSize(window.innerWidth,window.innerHeight);
-const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(60,window.innerWidth/window.innerHeight,.1,1000);
-camera.position.set(0,0,5);
-scene.add(new THREE.AmbientLight(0xffffff,.25));
-const dl1=new THREE.DirectionalLight(0x6ee7ff,.9);dl1.position.set(5,5,5);scene.add(dl1);
-const dl2=new THREE.DirectionalLight(0xa78bfa,.6);dl2.position.set(-5,-3,2);scene.add(dl2);
-const objects=[];
-function addObj(geo,x,y,z){
-  const g=new THREE.Group();
-  g.add(new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color:0x1a2535,roughness:.3,metalness:.9})));
-  const w=new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color:0xffffff,wireframe:true,opacity:.11,transparent:true}));
-  w.scale.setScalar(1.015);g.add(w);
-  g.position.set(x,y,z);
-  g.userData={rx:(Math.random()-.5)*.003,ry:(Math.random()-.5)*.004,fp:Math.random()*Math.PI*2,fs:.3+Math.random()*.4};
-  scene.add(g);objects.push(g);
+function loadIframe(id) {
+  const iframe = document.getElementById(id + '-iframe');
+  const overlay = document.getElementById(id + '-overlay');
+  iframe.src = iframeSrcs[id];
+  overlay.classList.add('hidden');
 }
-addObj(new THREE.IcosahedronGeometry(1,0),3.5,.5,-3);
-addObj(new THREE.OctahedronGeometry(.7,0),-3.5,1,-4);
-addObj(new THREE.TorusGeometry(.6,.18,8,24),2,-2,-5);
-addObj(new THREE.TetrahedronGeometry(.8,0),-2.5,-1.5,-3);
-addObj(new THREE.IcosahedronGeometry(.5,1),0,2.5,-6);
-addObj(new THREE.OctahedronGeometry(.4,0),4.5,-1,-6);
-addObj(new THREE.TorusGeometry(.4,.12,6,18),-4,-2.5,-5);
-const pb=new Float32Array(180*3);
-for(let i=0;i<180;i++){pb[i*3]=(Math.random()-.5)*22;pb[i*3+1]=(Math.random()-.5)*22;pb[i*3+2]=(Math.random()-.5)*15-2;}
-const pg=new THREE.BufferGeometry();pg.setAttribute('position',new THREE.BufferAttribute(pb,3));
-scene.add(new THREE.Points(pg,new THREE.PointsMaterial({color:0xffffff,size:.025,transparent:true,opacity:.22})));
-let camTX=0,camTY=0,sY=0;
-document.addEventListener('mousemove',e=>{camTX=((e.clientX/window.innerWidth)-.5)*1.3;camTY=-((e.clientY/window.innerHeight)-.5)*.9;});
-window.addEventListener('scroll',()=>{sY=window.scrollY;});
-window.addEventListener('resize',()=>{camera.aspect=window.innerWidth/window.innerHeight;camera.updateProjectionMatrix();renderer.setSize(window.innerWidth,window.innerHeight);});
-let t=0;
-(function animate(){
-  requestAnimationFrame(animate);t+=.008;
-  camera.position.x+=(camTX-camera.position.x)*.05;
-  camera.position.y+=(camTY-camera.position.y)*.05;
-  camera.position.z=5-sY*.0008;
-  objects.forEach(o=>{o.rotation.x+=o.userData.rx;o.rotation.y+=o.userData.ry;o.position.y+=Math.sin(t*o.userData.fs+o.userData.fp)*.003;});
-  renderer.render(scene,camera);
-})();
-// Scroll reveal
-const obs=new IntersectionObserver(entries=>{entries.forEach((e,i)=>{if(e.isIntersecting)setTimeout(()=>e.target.classList.add('in'),i*60);});},{threshold:.1});
-document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
-// GitHub
-const GH='josh11100';
-const LC={Python:'#3572A5',JavaScript:'#f1e05a',TypeScript:'#3178c6','C++':'#f34b7d',R:'#198CE7',HTML:'#e34c26',Shell:'#89e051',Jupyter:'#DA5B0B'};
-const SKIP=['gaucho','ucsbapper'];
-async function loadProjects(){
-  const grid=document.getElementById('proj-grid');
-  try{
-    const res=await fetch(`https://api.github.com/users/${GH}/repos?sort=updated&per_page=30`);
-    if(!res.ok)throw new Error();
-    const repos=await res.json();
-    repos.sort((a,b)=>b.stargazers_count-a.stargazers_count||new Date(b.updated_at)-new Date(a.updated_at));
-    const filtered=repos.filter(r=>!SKIP.some(s=>r.name.toLowerCase().includes(s)));
-    const extras=[
-      {name:'Family Tree Program',description:'C++ family tree management system with insertion, relationship queries, ancestry analysis, and CLI using dynamic data structures.',html_url:`https://github.com/${GH}`,language:'C++',topics:['data-structures','algorithms'],stargazers_count:null,isResume:true},
-      {name:'Aircraft Info System',description:'C++ application managing aircraft data including origin, type, distance traveled, and flight statistics with filtering and reporting.',html_url:`https://github.com/${GH}`,language:'C++',topics:['data-management','cpp'],stargazers_count:null,isResume:true},
-    ];
-    const ghNames=filtered.map(r=>r.name.toLowerCase().replace(/[-_]/g,''));
-    const filtExtras=extras.filter(r=>!ghNames.some(n=>n.includes(r.name.split(' ')[0].toLowerCase())));
-    const combined=[...filtExtras,...filtered].slice(0,8);
-    grid.innerHTML='';
-    if(!combined.length)throw new Error();
-    combined.forEach(r=>{const c=buildCard(r);grid.appendChild(c);setTimeout(()=>obs.observe(c),60);});
-  }catch{
-    grid.innerHTML='';
-    [{name:'Family Tree Program',description:'C++ family tree system with insertion, queries, and ancestry analysis.',language:'C++',topics:['data-structures','algorithms'],html_url:`https://github.com/${GH}`},
-     {name:'Aircraft Info System',description:'C++ aircraft data manager with filtering, lookup, and reporting.',language:'C++',topics:['data-management'],html_url:`https://github.com/${GH}`}
-    ].forEach(r=>grid.appendChild(buildCard(r)));
-  }
+
+// Reveal on Scroll
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(en => { if(en.isIntersecting) en.target.classList.add('in'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(r => observer.observe(r));
+
+// Simple Three.js Background
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('three-canvas'), alpha: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+
+const geometry = new THREE.IcosahedronGeometry(1, 1);
+const material = new THREE.MeshBasicMaterial({ color: 0x6ee7ff, wireframe: true, transparent: true, opacity: 0.1 });
+const sphere = new THREE.Mesh(geometry, material);
+scene.add(sphere);
+camera.position.z = 3;
+
+function animate() {
+  requestAnimationFrame(animate);
+  sphere.rotation.x += 0.001;
+  sphere.rotation.y += 0.002;
+  renderer.render(scene, camera);
 }
-function buildCard(r){
-  const a=document.createElement('a');
-  a.className='proj-card reveal';
-  a.href=r.html_url||`https://github.com/${GH}`;
-  a.target='_blank';a.rel='noopener';
-  const lang=r.language||'Python',color=LC[lang]||'#aaa',topics=(r.topics||[]).slice(0,3);
-  a.innerHTML=`<div class="proj-card-top"><div class="proj-lang"><span class="lang-dot" style="background:${color}"></span>${lang}</div><span class="proj-arrow">&#8599;</span></div><div class="proj-name">${r.name.replace(/[-_]/g,' ')}</div><div class="proj-desc">${r.description||'No description.'}</div><div class="proj-tags">${topics.map(t=>`<span class="proj-tag">${t}</span>`).join('')}${r.isResume?'<span class="proj-tag" style="color:rgba(110,231,255,.5);border-color:rgba(110,231,255,.18)">featured</span>':''}</div>${r.stargazers_count!=null?`<div class="proj-stars">&#11088; ${r.stargazers_count}</div>`:''}`;
-  return a;
-}
-loadProjects();
+animate();
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
 </script>
 </body>
 </html>
