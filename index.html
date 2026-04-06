@@ -3,1046 +3,1064 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Joshua Chung — 3D Portfolio</title>
+<title>Joshua Chung — Data Scientist</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #020408;
+    --bg: #060810;
+    --surface: #0d1117;
+    --card: #111827;
     --accent: #00e5ff;
     --accent2: #7c3aed;
     --accent3: #f59e0b;
     --text: #e2e8f0;
     --muted: #64748b;
+    --border: rgba(0,229,255,0.12);
+    --glow: rgba(0,229,255,0.25);
   }
+
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-  html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg); }
 
-  body { font-family: 'JetBrains Mono', monospace; cursor: none; }
+  html { scroll-behavior: smooth; }
 
-  #three-canvas {
-    position: fixed; inset: 0; z-index: 0;
+  body {
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+    cursor: none;
   }
 
   /* Custom cursor */
-  .cursor-dot {
-    position: fixed; width: 8px; height: 8px;
-    background: var(--accent); border-radius: 50%;
-    transform: translate(-50%,-50%);
-    pointer-events: none; z-index: 9999;
-    transition: transform 0.1s, background 0.2s;
-    mix-blend-mode: screen;
-  }
-  .cursor-ring {
-    position: fixed; width: 40px; height: 40px;
-    border: 1px solid rgba(0,229,255,0.5);
+  .cursor {
+    width: 12px; height: 12px;
+    background: var(--accent);
     border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9999;
     transform: translate(-50%,-50%);
-    pointer-events: none; z-index: 9998;
-    transition: all 0.12s ease;
+    transition: transform 0.1s, width 0.2s, height 0.2s, background 0.2s;
     mix-blend-mode: screen;
   }
-  .cursor-ring.hover { width: 60px; height: 60px; border-color: var(--accent); background: rgba(0,229,255,0.05); }
-
-  /* HUD Nav */
-  #hud {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 1.5rem 3rem;
-    background: linear-gradient(to bottom, rgba(2,4,8,0.9), transparent);
+  .cursor-trail {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(0,229,255,0.4);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
     pointer-events: none;
-  }
-  .hud-logo {
-    font-family: 'Syne', sans-serif; font-weight: 800;
-    font-size: 1rem; color: var(--accent);
-    letter-spacing: 0.2em; text-transform: uppercase;
-    pointer-events: all;
-  }
-  .hud-nav { display: flex; gap: 0.5rem; pointer-events: all; }
-  .hud-btn {
-    padding: 0.45rem 1.1rem;
-    border: 1px solid rgba(0,229,255,0.2);
-    background: rgba(0,229,255,0.04);
-    color: var(--muted);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase;
-    border-radius: 3px; cursor: pointer;
-    transition: all 0.2s;
-  }
-  .hud-btn:hover, .hud-btn.active {
-    border-color: var(--accent); color: var(--accent);
-    background: rgba(0,229,255,0.1);
+    z-index: 9998;
+    transform: translate(-50%,-50%);
+    transition: all 0.18s ease;
   }
 
-  /* Bottom controls */
-  #controls-hint {
-    position: fixed; bottom: 2rem; left: 50%;
-    transform: translateX(-50%);
-    display: flex; gap: 2rem; align-items: center;
+  /* Canvas background */
+  #bg-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    opacity: 0.6;
+  }
+
+  /* Noise overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.5;
+  }
+
+  /* Main content wrapper */
+  .wrapper { position: relative; z-index: 2; }
+
+  /* Nav */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
     z-index: 100;
-    background: rgba(2,4,8,0.6);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(0,229,255,0.1);
-    padding: 0.7rem 1.8rem; border-radius: 100px;
-    transition: opacity 0.5s;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.5rem 4rem;
+    background: rgba(6,8,16,0.7);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
   }
-  .hint-item {
-    display: flex; align-items: center; gap: 0.5rem;
-    font-size: 0.62rem; color: var(--muted); letter-spacing: 0.1em;
-  }
-  .hint-key {
-    padding: 0.2rem 0.5rem;
-    border: 1px solid rgba(255,255,255,0.15);
-    border-radius: 3px; font-size: 0.6rem; color: rgba(255,255,255,0.6);
-    background: rgba(255,255,255,0.05);
-  }
-
-  /* Info Panel — slides in from right */
-  #panel {
-    position: fixed; top: 50%; right: 0;
-    transform: translateY(-50%) translateX(110%);
-    width: 380px;
-    background: rgba(6,8,16,0.92);
-    backdrop-filter: blur(24px);
-    border: 1px solid rgba(0,229,255,0.15);
-    border-right: none;
-    border-radius: 16px 0 0 16px;
-    padding: 2.5rem;
-    z-index: 200;
-    transition: transform 0.5s cubic-bezier(0.23,1,0.32,1);
-    max-height: 85vh;
-    overflow-y: auto;
-  }
-  #panel.open { transform: translateY(-50%) translateX(0); }
-  #panel::-webkit-scrollbar { width: 3px; }
-  #panel::-webkit-scrollbar-track { background: transparent; }
-  #panel::-webkit-scrollbar-thumb { background: rgba(0,229,255,0.3); border-radius: 2px; }
-
-  .panel-tag {
-    font-size: 0.6rem; color: var(--accent);
-    letter-spacing: 0.2em; text-transform: uppercase;
-    margin-bottom: 0.8rem;
-  }
-  .panel-title {
-    font-family: 'Syne', sans-serif; font-size: 1.6rem;
-    font-weight: 800; line-height: 1.1;
-    margin-bottom: 1rem; letter-spacing: -0.02em;
-  }
-  .panel-desc {
-    font-size: 0.73rem; line-height: 1.9;
-    color: var(--muted); margin-bottom: 1.5rem;
-  }
-  .panel-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.5rem; }
-  .ptag {
-    padding: 0.2rem 0.65rem;
-    background: rgba(124,58,237,0.12);
-    border: 1px solid rgba(124,58,237,0.3);
-    border-radius: 3px; font-size: 0.6rem;
-    color: #a78bfa; letter-spacing: 0.06em;
-  }
-  .panel-metrics { display: flex; gap: 1.5rem; margin-bottom: 1.5rem; }
-  .pm-val {
+  .nav-logo {
     font-family: 'Syne', sans-serif;
-    font-size: 1.4rem; font-weight: 700; color: var(--accent3);
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
   }
-  .pm-label { font-size: 0.58rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
-  .panel-link {
-    display: inline-flex; align-items: center; gap: 0.5rem;
-    padding: 0.7rem 1.5rem;
-    background: rgba(0,229,255,0.08);
-    border: 1px solid rgba(0,229,255,0.3);
-    border-radius: 4px;
-    color: var(--accent); font-size: 0.68rem;
-    letter-spacing: 0.12em; text-transform: uppercase;
-    text-decoration: none; cursor: pointer;
+  .nav-links { display: flex; gap: 2.5rem; }
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* Hero */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    padding: 0 4rem;
+    position: relative;
+  }
+  .hero-content { max-width: 900px; }
+
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 2rem;
+  }
+  .hero-tag::before {
+    content: '';
+    width: 30px; height: 1px;
+    background: var(--accent);
+  }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(3.5rem, 8vw, 7rem);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 span {
+    display: block;
+    background: linear-gradient(135deg, #00e5ff 0%, #7c3aed 60%, #f59e0b 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-desc {
+    font-size: 0.85rem;
+    line-height: 1.9;
+    color: var(--muted);
+    max-width: 520px;
+    margin-bottom: 3rem;
+  }
+
+  .hero-badges {
+    display: flex; flex-wrap: wrap; gap: 0.75rem;
+    margin-bottom: 3rem;
+  }
+  .badge {
+    padding: 0.4rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    background: rgba(0,229,255,0.04);
     transition: all 0.2s;
-    margin-right: 0.5rem; margin-bottom: 0.5rem;
+  }
+  .badge:hover {
+    background: rgba(0,229,255,0.1);
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .hero-cta { display: flex; gap: 1rem; }
+  .btn-primary {
+    padding: 0.9rem 2.2rem;
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s;
     display: inline-block;
   }
-  .panel-link:hover { background: rgba(0,229,255,0.18); border-color: var(--accent); }
-  .panel-close {
-    position: absolute; top: 1rem; right: 1rem;
-    width: 28px; height: 28px;
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 50%; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    color: var(--muted); font-size: 0.75rem;
-    transition: all 0.2s; background: none;
+  .btn-primary:hover {
+    background: #fff;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0,229,255,0.3);
   }
-  .panel-close:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-ghost {
+    padding: 0.9rem 2.2rem;
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+    display: inline-block;
+  }
+  .btn-ghost:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-3px);
+  }
 
-  /* Updated Section title overlay to be centered */
-  #scene-label {
-    position: fixed; bottom: 8%; left: 50%;
-    transform: translateX(-50%);
-    z-index: 100;
-    pointer-events: none;
-    transition: opacity 0.4s;
-    text-align: center;
+  /* Stats row */
+  .stats-row {
+    position: absolute; bottom: 3rem; right: 4rem;
+    display: flex; gap: 3rem;
   }
-  .sl-num { font-size: 0.6rem; color: var(--accent); letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 0.3rem; }
-  .sl-title { font-family: 'Syne', sans-serif; font-size: 1.8rem; font-weight: 800; letter-spacing: -0.02em; opacity: 0.9; }
+  .stat { text-align: right; }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem; font-weight: 800;
+    color: var(--accent);
+    display: block;
+  }
+  .stat-label {
+    font-size: 0.62rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
 
-  /* Minimap */
-  #minimap {
-    position: fixed; bottom: 2rem; right: 2rem; z-index: 100;
-    width: 120px;
+  /* Section */
+  section {
+    padding: 8rem 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
   }
-  .mm-title { font-size: 0.55rem; color: var(--muted); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.5rem; }
-  .mm-nodes { display: flex; flex-direction: column; gap: 0.4rem; }
-  .mm-node {
-    display: flex; align-items: center; gap: 0.5rem;
-    cursor: pointer; padding: 0.2rem 0;
+  .section-header { margin-bottom: 4rem; }
+  .section-num {
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  /* Projects */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+  .project-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+  .project-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(0,229,255,0.04), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .project-card:hover::before { opacity: 1; }
+  .project-card:hover {
+    border-color: rgba(0,229,255,0.35);
+    transform: translateY(-6px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(0,229,255,0.06);
+  }
+  .project-card.featured {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+    background: linear-gradient(135deg, #0d1117, #0f172a);
+  }
+
+  .project-num {
+    font-size: 0.6rem; letter-spacing: 0.2em;
+    color: var(--accent); text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .project-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.5rem; font-weight: 700;
+    margin-bottom: 1rem;
+    letter-spacing: -0.01em;
+  }
+  .project-desc {
+    font-size: 0.75rem; line-height: 1.9;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+  }
+  .project-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; }
+  .tag {
+    padding: 0.25rem 0.75rem;
+    background: rgba(124,58,237,0.12);
+    border: 1px solid rgba(124,58,237,0.25);
+    border-radius: 4px;
+    font-size: 0.62rem;
+    color: #a78bfa;
+    letter-spacing: 0.08em;
+  }
+  .project-metrics {
+    display: flex; gap: 2rem;
+  }
+  .metric { }
+  .metric-val {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.4rem; font-weight: 700;
+    color: var(--accent3);
+  }
+  .metric-label {
+    font-size: 0.6rem; color: var(--muted);
+    letter-spacing: 0.1em; text-transform: uppercase;
+  }
+
+  /* Viz panel for featured project */
+  .project-viz {
+    height: 220px;
+    position: relative;
+  }
+  .project-link {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    color: var(--accent); font-size: 0.7rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0,229,255,0.2);
+    padding-bottom: 2px;
+    transition: border-color 0.2s;
+    margin-top: 0.5rem;
+  }
+  .project-link:hover { border-color: var(--accent); }
+  .project-link::after { content: '↗'; font-size: 0.8rem; }
+
+  /* Experience */
+  .exp-list { display: flex; flex-direction: column; gap: 0; }
+  .exp-item {
+    display: grid; grid-template-columns: 220px 1fr;
+    gap: 3rem; padding: 2.5rem 0;
+    border-bottom: 1px solid var(--border);
     transition: all 0.2s;
   }
-  .mm-node:hover .mm-dot { background: var(--accent); box-shadow: 0 0 8px var(--accent); }
-  .mm-node:hover .mm-label { color: var(--text); }
-  .mm-dot {
-    width: 6px; height: 6px; border-radius: 50%;
-    background: rgba(0,229,255,0.3);
-    border: 1px solid rgba(0,229,255,0.4);
-    transition: all 0.3s; flex-shrink: 0;
+  .exp-item:first-child { border-top: 1px solid var(--border); }
+  .exp-item:hover { padding-left: 1rem; }
+  .exp-left { }
+  .exp-period {
+    font-size: 0.65rem; color: var(--muted);
+    letter-spacing: 0.15em; text-transform: uppercase;
+    margin-bottom: 0.5rem;
   }
-  .mm-dot.active { background: var(--accent); box-shadow: 0 0 10px var(--accent); }
-  .mm-label { font-size: 0.6rem; color: var(--muted); letter-spacing: 0.08em; transition: color 0.2s; }
-  .mm-label.active { color: var(--accent); }
+  .exp-company {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.95rem; font-weight: 700;
+    color: var(--accent);
+  }
+  .exp-right { }
+  .exp-role {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem; font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+  .exp-bullets li {
+    font-size: 0.73rem; line-height: 1.8;
+    color: var(--muted); padding-left: 1.2rem;
+    position: relative;
+  }
+  .exp-bullets li::before {
+    content: '▸';
+    position: absolute; left: 0;
+    color: var(--accent); font-size: 0.7rem;
+  }
 
-  /* Loading screen */
-  #loading {
-    position: fixed; inset: 0; z-index: 999;
-    background: var(--bg);
+  /* Skills */
+  .skills-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .skill-group {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+    transition: all 0.3s;
+  }
+  .skill-group:hover {
+    border-color: rgba(0,229,255,0.25);
+    transform: translateY(-4px);
+  }
+  .skill-group-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.8rem; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 1.5rem;
+  }
+  .skill-pills { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .skill-pill {
+    padding: 0.3rem 0.75rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 4px;
+    font-size: 0.65rem;
+    color: var(--text);
+    letter-spacing: 0.06em;
+    transition: all 0.2s;
+  }
+  .skill-pill:hover {
+    background: rgba(0,229,255,0.08);
+    border-color: rgba(0,229,255,0.3);
+    color: var(--accent);
+  }
+
+  /* Athletics */
+  .athletics-card {
+    background: linear-gradient(135deg, #0d1117, #0f1a2e);
+    border: 1px solid rgba(245,158,11,0.2);
+    border-radius: 12px;
+    padding: 3rem;
+    display: grid; grid-template-columns: 1fr auto;
+    gap: 3rem; align-items: center;
+  }
+  .athletics-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.6rem; font-weight: 800;
+    margin-bottom: 0.5rem;
+  }
+  .athletics-sub {
+    font-size: 0.75rem; color: #f59e0b;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .athletics-desc {
+    font-size: 0.73rem; line-height: 1.9;
+    color: var(--muted); max-width: 500px;
+  }
+  .athletics-stats { display: flex; flex-direction: column; gap: 1.5rem; text-align: right; }
+  .ath-stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.5rem; font-weight: 800;
+    color: #f59e0b; display: block;
+  }
+  .ath-stat-label { font-size: 0.6rem; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; }
+
+  /* Contact */
+  .contact-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+  .contact-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+    display: flex; align-items: center; gap: 1.5rem;
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.3s;
+  }
+  .contact-item:hover {
+    border-color: var(--accent);
+    transform: translateX(6px);
+    background: rgba(0,229,255,0.04);
+  }
+  .contact-icon {
+    width: 48px; height: 48px;
+    border-radius: 10px;
+    background: rgba(0,229,255,0.08);
+    border: 1px solid rgba(0,229,255,0.2);
     display: flex; align-items: center; justify-content: center;
-    flex-direction: column; gap: 1.5rem;
-    transition: opacity 0.8s;
+    flex-shrink: 0;
+    font-size: 1.2rem;
   }
-  #loading.hidden { opacity: 0; pointer-events: none; }
-  .load-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 2rem; color: var(--accent); letter-spacing: 0.2em; }
-  .load-bar-wrap { width: 200px; height: 2px; background: rgba(0,229,255,0.1); border-radius: 1px; overflow: hidden; }
-  .load-bar { height: 100%; background: var(--accent); width: 0; transition: width 1s ease; border-radius: 1px; }
-  .load-text { font-size: 0.6rem; color: var(--muted); letter-spacing: 0.2em; text-transform: uppercase; }
+  .contact-label { font-size: 0.6rem; letter-spacing: 0.15em; color: var(--muted); text-transform: uppercase; margin-bottom: 0.3rem; }
+  .contact-val { font-family: 'Syne', sans-serif; font-size: 0.95rem; font-weight: 600; }
 
-  /* Scrollbar */
-  ::-webkit-scrollbar { width: 0; }
+  /* Footer */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 4rem;
+    display: flex; align-items: center; justify-content: space-between;
+    max-width: 100%;
+  }
+  .footer-text { font-size: 0.65rem; color: var(--muted); letter-spacing: 0.1em; }
+
+  /* Scroll reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* 3D floating element */
+  .floating-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+  }
+
+  /* Divider */
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--border), transparent);
+    margin: 0 4rem;
+    max-width: calc(1200px - 8rem);
+    margin-left: auto; margin-right: auto;
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    section { padding: 5rem 1.5rem; }
+    .hero { padding: 0 1.5rem; }
+    .hero h1 { font-size: 3rem; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .project-card.featured { grid-template-columns: 1fr; }
+    .project-viz { display: none; }
+    .skills-grid { grid-template-columns: 1fr; }
+    .athletics-card { grid-template-columns: 1fr; }
+    .contact-grid { grid-template-columns: 1fr; }
+    .stats-row { position: static; margin-top: 3rem; justify-content: flex-start; }
+    .exp-item { grid-template-columns: 1fr; gap: 0.5rem; }
+    footer { padding: 2rem 1.5rem; flex-direction: column; gap: 1rem; text-align: center; }
+  }
 </style>
 </head>
 <body>
 
-<div id="loading">
-  <div class="load-logo">JC.DS</div>
-  <div class="load-bar-wrap"><div class="load-bar" id="load-bar"></div></div>
-  <div class="load-text" id="load-text">Initializing scene...</div>
+<canvas id="bg-canvas"></canvas>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-trail" id="cursor-trail"></div>
+
+<div class="wrapper">
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">JC.DS</div>
+    <div class="nav-links">
+      <a href="#projects">Projects</a>
+      <a href="#experience">Experience</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div style="position:absolute;top:20%;left:60%;width:400px;height:400px;background:radial-gradient(circle,rgba(124,58,237,0.15),transparent 70%);pointer-events:none;"></div>
+    <div style="position:absolute;bottom:10%;left:10%;width:300px;height:300px;background:radial-gradient(circle,rgba(0,229,255,0.08),transparent 70%);pointer-events:none;"></div>
+
+    <div class="hero-content">
+      <div class="hero-tag">Available for opportunities</div>
+      <h1>
+        Joshua<br>
+        <span>Chung</span>
+      </h1>
+      <p class="hero-desc">
+        Statistics & Data Science @ UC Santa Barbara. Building ML pipelines, 
+        interactive dashboards, and data-driven products that make complex insights 
+        accessible to everyone. Former D1 athlete.
+      </p>
+      <div class="hero-badges">
+        <span class="badge">Python</span>
+        <span class="badge">Machine Learning</span>
+        <span class="badge">XGBoost</span>
+        <span class="badge">NLP</span>
+        <span class="badge">ETL Pipelines</span>
+        <span class="badge">SHAP</span>
+        <span class="badge">Streamlit</span>
+        <span class="badge">PostgreSQL</span>
+      </div>
+      <div class="hero-cta">
+        <a href="https://github.com/josh11100" target="_blank" class="btn-primary">View GitHub</a>
+        <a href="#contact" class="btn-ghost">Get In Touch</a>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat">
+        <span class="stat-num">0.847</span>
+        <span class="stat-label">ROC-AUC</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">70K+</span>
+        <span class="stat-label">Records Merged</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">100+</span>
+        <span class="stat-label">Active Users</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="section-header reveal">
+      <div class="section-num">// 01 — Projects</div>
+      <h2 class="section-title">What I've<br>Been Building</h2>
+    </div>
+
+    <div class="projects-grid">
+
+      <!-- Featured: Gaucho Insights -->
+      <div class="project-card featured reveal">
+        <div>
+          <div class="project-num">01 — Featured</div>
+          <h3 class="project-title">Gaucho Insights</h3>
+          <p class="project-desc">
+            Async scraper extracting data from 1,000+ UCSB profiles, 
+            merged into a 70,000+ record dataset via fuzzy matching. 
+            Applied 5 ML/statistical methods including KL-divergence anomaly 
+            detection, KMeans clustering, and cosine similarity for population-level analysis.
+          </p>
+          <div class="project-tags">
+            <span class="tag">Python</span>
+            <span class="tag">Streamlit</span>
+            <span class="tag">Scikit-learn</span>
+            <span class="tag">Pandas</span>
+            <span class="tag">NLP</span>
+            <span class="tag">Playwright</span>
+          </div>
+          <div class="project-metrics" style="margin-bottom:1.5rem;">
+            <div class="metric">
+              <div class="metric-val">1,000+</div>
+              <div class="metric-label">Profiles Scraped</div>
+            </div>
+            <div class="metric">
+              <div class="metric-val">70K+</div>
+              <div class="metric-label">Records Merged</div>
+            </div>
+            <div class="metric">
+              <div class="metric-val">100+</div>
+              <div class="metric-label">Active Users</div>
+            </div>
+          </div>
+          <a href="https://ucsb-insight.streamlit.app/" target="_blank" class="project-link">Live App</a>
+        </div>
+        <div class="project-viz" id="viz-gaucho"></div>
+      </div>
+
+      <!-- ChurnIQ -->
+      <div class="project-card reveal">
+        <div class="project-num">02</div>
+        <h3 class="project-title">ChurnIQ</h3>
+        <p class="project-desc">
+          End-to-end churn prediction pipeline on 7,000+ records. 
+          XGBoost classifier with class-imbalance correction, SHAP TreeExplainer 
+          for per-prediction waterfall explanations, and Streamlit dashboard 
+          with single-record and bulk CSV scoring modes.
+        </p>
+        <div class="project-tags">
+          <span class="tag">XGBoost</span>
+          <span class="tag">SHAP</span>
+          <span class="tag">Scikit-learn</span>
+          <span class="tag">Streamlit</span>
+        </div>
+        <div class="project-metrics">
+          <div class="metric">
+            <div class="metric-val">0.847</div>
+            <div class="metric-label">ROC-AUC</div>
+          </div>
+          <div class="metric">
+            <div class="metric-val">79%</div>
+            <div class="metric-label">Positive Recall</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Family Tree -->
+      <div class="project-card reveal">
+        <div class="project-num">03</div>
+        <h3 class="project-title">Family Tree Program</h3>
+        <p class="project-desc">
+          Family tree system in C++ supporting insertion, relationship queries, 
+          and multi-generational ancestry traversal using dynamic graph data 
+          structures with modular class design and optimized traversal algorithms.
+        </p>
+        <div class="project-tags">
+          <span class="tag">C++</span>
+          <span class="tag">Data Structures</span>
+          <span class="tag">Graph Algorithms</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="section-header reveal">
+      <div class="section-num">// 02 — Experience</div>
+      <h2 class="section-title">Where I've<br>Worked</h2>
+    </div>
+
+    <div class="exp-list">
+      <div class="exp-item reveal">
+        <div class="exp-left">
+          <div class="exp-period">Jan 2026 — Present</div>
+          <div class="exp-company">Daily Nexus</div>
+        </div>
+        <div class="exp-right">
+          <div class="exp-role">Data Analyst — Data Journalism</div>
+          <ul class="exp-bullets">
+            <li>Cleaned, validated, and analyzed public datasets on housing, campus trends, and local policy with statistical rigor.</li>
+            <li>Built reusable Python pipelines to automate ingestion and formatting of recurring public records datasets, cutting turnaround time on deadline-driven stories.</li>
+            <li>Collaborated cross-functionally with editors to translate findings into interactive visualizations and publishable articles for non-technical audiences.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exp-item reveal">
+        <div class="exp-left">
+          <div class="exp-period">Jun – Sep 2024</div>
+          <div class="exp-company">ZFaceMelon</div>
+        </div>
+        <div class="exp-right">
+          <div class="exp-role">Full-Stack Developer Intern</div>
+          <ul class="exp-bullets">
+            <li>Designed normalized PostgreSQL schemas and automated ETL pipelines to ingest, clean, and transform large-scale datasets for real-time querying.</li>
+            <li>Built a secure subscription and auth system using Stripe + Flask, and developed backend REST APIs for scalable multi-tier user authorization.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="section-header reveal">
+      <div class="section-num">// 03 — Skills</div>
+      <h2 class="section-title">Technical<br>Toolkit</h2>
+    </div>
+
+    <div class="skills-grid">
+      <div class="skill-group reveal">
+        <div class="skill-group-title">Programming & Data</div>
+        <div class="skill-pills">
+          <span class="skill-pill">Python</span>
+          <span class="skill-pill">SQL</span>
+          <span class="skill-pill">C++</span>
+          <span class="skill-pill">R</span>
+          <span class="skill-pill">JavaScript</span>
+          <span class="skill-pill">Pandas</span>
+          <span class="skill-pill">NumPy</span>
+          <span class="skill-pill">Scikit-learn</span>
+        </div>
+      </div>
+      <div class="skill-group reveal">
+        <div class="skill-group-title">ML & Data Engineering</div>
+        <div class="skill-pills">
+          <span class="skill-pill">XGBoost</span>
+          <span class="skill-pill">Predictive Modeling</span>
+          <span class="skill-pill">ETL Pipelines</span>
+          <span class="skill-pill">NLP (TF-IDF)</span>
+          <span class="skill-pill">SHAP</span>
+          <span class="skill-pill">Anomaly Detection</span>
+          <span class="skill-pill">KMeans Clustering</span>
+          <span class="skill-pill">Statistical Analysis</span>
+        </div>
+      </div>
+      <div class="skill-group reveal">
+        <div class="skill-group-title">Frameworks & Tools</div>
+        <div class="skill-pills">
+          <span class="skill-pill">Streamlit</span>
+          <span class="skill-pill">Flask</span>
+          <span class="skill-pill">React</span>
+          <span class="skill-pill">PostgreSQL</span>
+          <span class="skill-pill">Git</span>
+          <span class="skill-pill">Playwright</span>
+          <span class="skill-pill">Datawrapper</span>
+          <span class="skill-pill">Stripe</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ATHLETICS -->
+  <section>
+    <div class="section-header reveal">
+      <div class="section-num">// 04 — Athletics</div>
+      <h2 class="section-title">Beyond the<br>Terminal</h2>
+    </div>
+    <div class="athletics-card reveal">
+      <div>
+        <div class="athletics-sub">Division I Varsity Golf • UCSB Gauchos</div>
+        <h3 class="athletics-title">Starting 5 — Big West Conference</h3>
+        <p class="athletics-desc">
+          Earned a starting varsity spot as a freshman and competed in 16 rounds 
+          across the Big West Conference. Entered college ranked 52nd nationally 
+          and 8th in California. Competed at the Big West Championships while earning 
+          Big West Commissioner's Highest Honors (3.51+ GPA) — proving that the 
+          discipline required to perform at D1 level translates directly to 
+          precision-driven analytical work.
+        </p>
+      </div>
+      <div class="athletics-stats">
+        <div>
+          <span class="ath-stat-num">75.9</span>
+          <span class="ath-stat-label">Scoring Average</span>
+        </div>
+        <div>
+          <span class="ath-stat-num">52nd</span>
+          <span class="ath-stat-label">National Ranking</span>
+        </div>
+        <div>
+          <span class="ath-stat-num">3.51+</span>
+          <span class="ath-stat-label">Commissioner's Honors GPA</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section-header reveal">
+      <div class="section-num">// 05 — Contact</div>
+      <h2 class="section-title">Let's<br>Connect</h2>
+    </div>
+    <div class="contact-grid">
+      <a href="tel:8087455231" class="contact-item reveal">
+        <div class="contact-icon">📞</div>
+        <div>
+          <div class="contact-label">Phone</div>
+          <div class="contact-val">(808) 745-5231</div>
+        </div>
+      </a>
+      <a href="mailto:joshuachung@ucsb.edu" class="contact-item reveal">
+        <div class="contact-icon">✉️</div>
+        <div>
+          <div class="contact-label">Email</div>
+          <div class="contact-val">joshuachung@ucsb.edu</div>
+        </div>
+      </a>
+      <a href="https://www.linkedin.com/in/joshua-chung858/" target="_blank" class="contact-item reveal">
+        <div class="contact-icon">💼</div>
+        <div>
+          <div class="contact-label">LinkedIn</div>
+          <div class="contact-val">joshua-chung858</div>
+        </div>
+      </a>
+      <a href="https://github.com/josh11100" target="_blank" class="contact-item reveal">
+        <div class="contact-icon">⌨️</div>
+        <div>
+          <div class="contact-label">GitHub</div>
+          <div class="contact-val">josh11100</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <footer>
+    <span class="footer-text">© 2026 Joshua Chung — Statistics & Data Science, UCSB</span>
+    <span class="footer-text">Built with intention.</span>
+  </footer>
+
 </div>
 
-<canvas id="three-canvas"></canvas>
-
-<div class="cursor-dot" id="cdot"></div>
-<div class="cursor-ring" id="cring"></div>
-
-<div id="hud">
-  <div class="hud-logo">JC.DS</div>
-  <div class="hud-nav">
-    <button class="hud-btn active" data-section="0">Hero</button>
-    <button class="hud-btn" data-section="1">Projects</button>
-    <button class="hud-btn" data-section="2">Experience</button>
-    <button class="hud-btn" data-section="3">Skills</button>
-    <button class="hud-btn" data-section="4">Athletics</button>
-    <button class="hud-btn" data-section="5">Contact</button>
-  </div>
-</div>
-
-<div id="scene-label">
-  <div class="sl-num" id="sl-num">// 00 — Home</div>
-  <div class="sl-title" id="sl-title">Joshua Chung</div>
-</div>
-
-<div id="minimap">
-  <div class="mm-title">Navigate</div>
-  <div class="mm-nodes" id="mm-nodes"></div>
-</div>
-
-<div id="controls-hint">
-  <div class="hint-item"><span class="hint-key">Drag</span> Rotate</div>
-  <div class="hint-item"><span class="hint-key">Scroll</span> Zoom</div>
-  <div class="hint-item"><span class="hint-key">Click</span> Explore</div>
-  <div class="hint-item"><span class="hint-key">←→</span> Navigate</div>
-</div>
-
-<div id="panel">
-  <button class="panel-close" id="panel-close">✕</button>
-  <div class="panel-tag" id="p-tag"></div>
-  <div class="panel-title" id="p-title"></div>
-  <div class="panel-desc" id="p-desc"></div>
-  <div class="panel-tags" id="p-tags"></div>
-  <div class="panel-metrics" id="p-metrics"></div>
-  <div id="p-links"></div>
-</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-// =============================================
-// DATA
-// =============================================
-const SECTIONS = [
-  { id: 0, label: '00 — Home', title: 'Joshua Chung', position: [0, 0, 0] },
-  { id: 1, label: '01 — Projects', title: 'What I\'ve Built', position: [25, 0, -5] },
-  { id: 2, label: '02 — Experience', title: 'Where I\'ve Worked', position: [50, 0, -10] },
-  { id: 3, label: '03 — Skills', title: 'Technical Toolkit', position: [75, 0, -5] },
-  { id: 4, label: '04 — Athletics', title: 'Beyond the Terminal', position: [100, 0, 0] },
-  { id: 5, label: '05 — Contact', title: "Let's Connect", position: [125, 0, 5] },
-];
-
-const NODE_DATA = {
-  hero: {
-    tag: '// Available for opportunities',
-    title: 'Joshua Chung',
-    desc: 'Statistics & Data Science @ UC Santa Barbara (Class of 2027). Building ML pipelines, interactive dashboards, and data-driven products. Former Division I golfer. GPA 3.3.',
-    tags: ['Python', 'Machine Learning', 'ETL Pipelines', 'NLP', 'PostgreSQL', 'Streamlit'],
-    metrics: [{ val: '0.847', label: 'ROC-AUC' }, { val: '70K+', label: 'Records' }, { val: '100+', label: 'Users' }],
-    links: [{ text: 'GitHub ↗', href: 'https://github.com/josh11100' }, { text: 'LinkedIn ↗', href: 'https://www.linkedin.com/in/joshua-chung858/' }],
-  },
-  gaucho: {
-    tag: '01 — Featured Project',
-    title: 'Gaucho Insights',
-    desc: 'Async scraper extracting data from 1,000+ UCSB professor profiles, merged into a 70,000+ record dataset via fuzzy matching. Applied 5 ML/statistical methods: KL-divergence anomaly detection, KMeans teaching-style clustering, cosine similarity for course recommendations, GPA forecasting, and prof-course fit scoring.',
-    tags: ['Python', 'Streamlit', 'Scikit-learn', 'Pandas', 'NLP', 'Playwright', 'KMeans', 'TF-IDF'],
-    metrics: [{ val: '1,000+', label: 'Profiles' }, { val: '70K+', label: 'Records' }, { val: '100+', label: 'Active Users' }],
-    links: [{ text: 'Live App ↗', href: 'https://ucsb-insight.streamlit.app/' }],
-  },
-  churniq: {
-    tag: '02 — Project',
-    title: 'ChurnIQ',
-    desc: 'End-to-end churn prediction pipeline on 7,000+ records. XGBoost classifier with class-imbalance correction, SHAP TreeExplainer for per-prediction waterfall explanations, and Streamlit dashboard with single-record and bulk CSV scoring modes.',
-    tags: ['XGBoost', 'SHAP', 'Scikit-learn', 'Streamlit', 'Logistic Regression', 'Python'],
-    metrics: [{ val: '0.847', label: 'ROC-AUC' }, { val: '79%', label: 'Recall' }, { val: '7K+', label: 'Records' }],
-    links: [],
-  },
-  familytree: {
-    tag: '03 — Project',
-    title: 'Family Tree Program',
-    desc: 'Family tree system in C++ supporting insertion, relationship queries, and multi-generational ancestry traversal using dynamic graph data structures with modular class design and optimized traversal algorithms.',
-    tags: ['C++', 'Data Structures', 'Graph Algorithms', 'OOP'],
-    metrics: [],
-    links: [],
-  },
-  nexus: {
-    tag: '02 — Experience',
-    title: 'Daily Nexus — Data Analyst',
-    desc: 'Jan 2026 – Present. Cleaned and analyzed public datasets on housing, campus trends, and local policy. Built reusable Python pipelines to automate ingestion of recurring public records datasets. Collaborated with editors to translate findings into interactive visualizations for non-technical audiences.',
-    tags: ['Python', 'Datawrapper', 'Data Journalism', 'ETL', 'Statistical Analysis'],
-    metrics: [],
-    links: [],
-  },
-  zfacemeleon: {
-    tag: '02 — Experience',
-    title: 'ZFaceMelon — Full-Stack Intern',
-    desc: 'Jun–Sep 2024. Designed normalized PostgreSQL schemas and automated ETL pipelines for real-time querying. Built a secure subscription and auth system using Stripe + Flask, and developed backend REST APIs for scalable multi-tier user authorization.',
-    tags: ['PostgreSQL', 'Flask', 'ETL', 'Stripe', 'REST APIs', 'Python'],
-    metrics: [],
-    links: [],
-  },
-  athletics: {
-    tag: '04 — Athletics',
-    title: 'D1 Golf — UCSB Gauchos',
-    desc: 'Earned a starting varsity spot as a freshman and competed in 16 rounds across the Big West Conference. Entered college ranked 52nd nationally and 8th in California. Competed at the Big West Championships while earning Big West Commissioner\'s Highest Honors (3.51+ GPA).',
-    tags: ['Division I', 'Big West Conference', 'Commissioner\'s Honors', 'Starting Varsity'],
-    metrics: [{ val: '75.9', label: 'Scoring Avg' }, { val: '52nd', label: 'National Rank' }, { val: '3.51+', label: 'Honors GPA' }],
-    links: [],
-  },
-};
-
-// =============================================
-// SCENE SETUP
-// =============================================
-const canvas = document.getElementById('three-canvas');
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.2;
-
-const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x020408);
-scene.fog = new THREE.FogExp2(0x020408, 0.012);
-
-const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 500);
-camera.position.set(0, 6, 18);
-camera.lookAt(0, 0, 0);
-
-const camTarget = { x: 0, y: 0, z: 0 };
-const camPos = { x: 0, y: 6, z: 18 };
-let currentSection = 0;
-
-// =============================================
-// MATERIALS & COLORS
-// =============================================
-const COLORS = {
-  cyan: 0x00e5ff,
-  purple: 0x7c3aed,
-  amber: 0xf59e0b,
-  white: 0xffffff,
-  dark: 0x111827,
-};
-
-function glowMat(color, opacity = 1) {
-  return new THREE.MeshStandardMaterial({ color, emissive: color, emissiveIntensity: 0.4, transparent: opacity < 1, opacity });
-}
-
-// =============================================
-// FLOOR GRID
-// =============================================
-const gridHelper = new THREE.GridHelper(300, 80, 0x00e5ff, 0x00e5ff);
-gridHelper.material.opacity = 0.06;
-gridHelper.material.transparent = true;
-gridHelper.position.y = -4;
-scene.add(gridHelper);
-
-// =============================================
-// AMBIENT & LIGHTS
-// =============================================
-const ambientLight = new THREE.AmbientLight(0x0a0f1e, 1);
-scene.add(ambientLight);
-
-const directionalLight = new THREE.DirectionalLight(0x00e5ff, 0.4);
-directionalLight.position.set(10, 20, 10);
-scene.add(directionalLight);
-
-function addPointLight(color, intensity, x, y, z) {
-  const l = new THREE.PointLight(color, intensity, 30);
-  l.position.set(x, y, z);
-  scene.add(l);
-  return l;
-}
-
-// =============================================
-// FLOATING PARTICLES
-// =============================================
-const particleGeo = new THREE.BufferGeometry();
-const pCount = 800;
-const pPositions = new Float32Array(pCount * 3);
-for (let i = 0; i < pCount; i++) {
-  pPositions[i * 3] = (Math.random() - 0.5) * 200;
-  pPositions[i * 3 + 1] = (Math.random() - 0.5) * 40;
-  pPositions[i * 3 + 2] = (Math.random() - 0.5) * 60;
-}
-particleGeo.setAttribute('position', new THREE.BufferAttribute(pPositions, 3));
-const particleMat = new THREE.PointsMaterial({ color: 0x00e5ff, size: 0.12, transparent: true, opacity: 0.5 });
-const particles = new THREE.Points(particleGeo, particleMat);
-scene.add(particles);
-
-// =============================================
-// SECTION NODE BUILDER
-// =============================================
-const allNodes = [];
-const sectionGroups = [];
-const SECTION_X = [0, 25, 50, 75, 100, 125];
-
-function makeLabel(text, size = 24, color = '#00e5ff', font = 'Syne') {
-  const c = document.createElement('canvas');
-  c.width = 512; c.height = 128;
-  const ctx = c.getContext('2d');
-  ctx.fillStyle = 'rgba(0,0,0,0)';
-  ctx.fillRect(0, 0, 512, 128);
-  ctx.fillStyle = color;
-  ctx.font = `700 ${size}px ${font}, monospace`;
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(text, 256, 64);
-  const tex = new THREE.CanvasTexture(c);
-  const mat = new THREE.SpriteMaterial({ map: tex, transparent: true });
-  const sprite = new THREE.Sprite(mat);
-  sprite.scale.set(8, 2, 1);
-  return sprite;
-}
-
-function makeSmallLabel(text, color = '#64748b') {
-  const s = makeLabel(text, 14, color, 'JetBrains Mono');
-  s.scale.set(5, 1, 1);
-  return s;
-}
-
-// =============================================
-// SECTION 0: HERO
-// =============================================
-{
-  const g = new THREE.Group();
-  g.position.x = SECTION_X[0];
-
-  const orbGeo = new THREE.IcosahedronGeometry(2.5, 4);
-  const orbMat = new THREE.MeshStandardMaterial({
-    color: 0x050a14, roughness: 0.1, metalness: 0.9,
-    emissive: 0x00e5ff, emissiveIntensity: 0.08,
-  });
-  const orb = new THREE.Mesh(orbGeo, orbMat);
-  orb.userData = { nodeKey: 'hero', clickable: true };
-  g.add(orb);
-  allNodes.push(orb);
-
-  const ringGeo = new THREE.TorusGeometry(3.5, 0.03, 16, 100);
-  const ringMat = new THREE.MeshBasicMaterial({ color: 0x00e5ff, transparent: true, opacity: 0.4 });
-  const ring = new THREE.Mesh(ringGeo, ringMat);
-  ring.rotation.x = Math.PI / 2;
-  g.add(ring);
-
-  const ring2 = new THREE.Mesh(
-    new THREE.TorusGeometry(4.2, 0.02, 16, 100),
-    new THREE.MeshBasicMaterial({ color: 0x7c3aed, transparent: true, opacity: 0.25 })
-  );
-  ring2.rotation.x = Math.PI / 3;
-  ring2.rotation.z = Math.PI / 6;
-  g.add(ring2);
-
-  const satellites = [
-    { r: 5, angle: 0, size: 0.4, color: 0x00e5ff, speed: 0.008 },
-    { r: 6, angle: 2.1, size: 0.25, color: 0x7c3aed, speed: -0.005 },
-    { r: 4.5, angle: 4.2, size: 0.3, color: 0xf59e0b, speed: 0.011 },
-  ];
-  const satMeshes = [];
-  satellites.forEach(s => {
-    const sm = new THREE.Mesh(
-      new THREE.SphereGeometry(s.size, 12, 12),
-      new THREE.MeshStandardMaterial({ color: s.color, emissive: s.color, emissiveIntensity: 0.8 })
-    );
-    sm.userData = { satConfig: s, angle: s.angle };
-    g.add(sm);
-    satMeshes.push(sm);
-  });
-  g.userData.satMeshes = satMeshes;
-  g.userData.satellites = satellites;
-
-  const nameLabel = makeLabel('JOSHUA CHUNG', 28, '#e2e8f0');
-  nameLabel.position.set(0, 5, 0);
-  g.add(nameLabel);
-
-  const subLabel = makeSmallLabel('Statistics & Data Science • UCSB', '#64748b');
-  subLabel.position.set(0, 3.8, 0);
-  g.add(subLabel);
-
-  const statsData = [{ val: '0.847', label: 'ROC-AUC', pos: [-6, 2, -2] }, { val: '70K+', label: 'Records', pos: [7, 1, -3] }, { val: 'D1', label: 'Golfer', pos: [0, -3, -4] }];
-  statsData.forEach(stat => {
-    const sg = new THREE.Group();
-    sg.position.set(...stat.pos);
-    const sm = new THREE.Mesh(
-      new THREE.OctahedronGeometry(0.6, 0),
-      new THREE.MeshStandardMaterial({ color: 0xf59e0b, emissive: 0xf59e0b, emissiveIntensity: 0.6, wireframe: true })
-    );
-    sg.add(sm);
-    const sl = makeLabel(stat.val, 20, '#f59e0b');
-    sl.position.y = 1.3; sl.scale.set(4, 1, 1);
-    sg.add(sl);
-    const sl2 = makeSmallLabel(stat.label, '#64748b');
-    sl2.position.y = 0.5;
-    sg.add(sl2);
-    g.add(sg);
-  });
-
-  scene.add(g);
-  sectionGroups.push(g);
-}
-
-// =============================================
-// SECTION 1: PROJECTS
-// =============================================
-{
-  const g = new THREE.Group();
-  g.position.x = SECTION_X[1];
-
-  const projects = [
-    { key: 'gaucho', name: 'Gaucho\nInsights', pos: [-8, 2, 0], color: 0x00e5ff, shape: 'featured' },
-    { key: 'churniq', name: 'ChurnIQ', pos: [2, 0, 2], color: 0x7c3aed, shape: 'cube' },
-    { key: 'familytree', name: 'Family Tree', pos: [9, -1, -2], color: 0xf59e0b, shape: 'diamond' },
-  ];
-
-  projects.forEach((proj, i) => {
-    const pg = new THREE.Group();
-    pg.position.set(...proj.pos);
-
-    let geo;
-    if (proj.shape === 'featured') geo = new THREE.IcosahedronGeometry(2.2, 1);
-    else if (proj.shape === 'cube') geo = new THREE.BoxGeometry(1.8, 1.8, 1.8);
-    else geo = new THREE.OctahedronGeometry(1.6, 0);
-
-    const mat = new THREE.MeshStandardMaterial({
-      color: 0x0d1117, roughness: 0.2, metalness: 0.8,
-      emissive: proj.color, emissiveIntensity: 0.12,
-    });
-    const mesh = new THREE.Mesh(geo, mat);
-    mesh.userData = { nodeKey: proj.key, clickable: true };
-    pg.add(mesh);
-    allNodes.push(mesh);
-
-    const wf = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ color: proj.color, wireframe: true, transparent: true, opacity: 0.25 }));
-    wf.scale.setScalar(1.08);
-    pg.add(wf);
-
-    const rg = new THREE.Mesh(
-      new THREE.TorusGeometry(proj.shape === 'featured' ? 3 : 2, 0.03, 16, 80),
-      new THREE.MeshBasicMaterial({ color: proj.color, transparent: true, opacity: 0.3 })
-    );
-    rg.rotation.x = Math.PI / 2;
-    pg.add(rg);
-
-    const lbl = makeLabel(proj.name, proj.shape === 'featured' ? 22 : 18, '#e2e8f0');
-    lbl.position.y = proj.shape === 'featured' ? 3.8 : 3;
-    pg.add(lbl);
-
-    if (i < projects.length - 1) {
-      const nextPos = projects[i + 1].pos;
-      const lineGeo = new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector3(0, 0, 0),
-        new THREE.Vector3(nextPos[0] - proj.pos[0], nextPos[1] - proj.pos[1], nextPos[2] - proj.pos[2])
-      ]);
-      const line = new THREE.Line(lineGeo, new THREE.LineBasicMaterial({ color: 0x1a2a3a, transparent: true, opacity: 0.5 }));
-      pg.add(line);
-    }
-    g.add(pg);
-  });
-
-  scene.add(g);
-  sectionGroups.push(g);
-}
-
-// =============================================
-// SECTION 2: EXPERIENCE
-// =============================================
-{
-  const g = new THREE.Group();
-  g.position.x = SECTION_X[2];
-
-  const exps = [
-    { key: 'nexus', name: 'Daily Nexus', role: 'Data Analyst', period: '2026—Present', pos: [-5, 3, 0], color: 0x00e5ff },
-    { key: 'zfacemeleon', name: 'ZFaceMelon', role: 'Full-Stack Intern', period: '2024', pos: [5, -1, 2], color: 0x7c3aed },
-  ];
-
-  exps.forEach(exp => {
-    const pg = new THREE.Group();
-    pg.position.set(...exp.pos);
-
-    const points = [];
-    for (let i = 0; i < 6; i++) {
-      const a = (i / 6) * Math.PI * 2;
-      points.push(new THREE.Vector2(Math.cos(a) * 2, Math.sin(a) * 2));
-    }
-    const shape = new THREE.Shape(points);
-    const extrudeSettings = { depth: 0.5, bevelEnabled: true, bevelSize: 0.1, bevelThickness: 0.1 };
-    const geo = new THREE.ExtrudeGeometry(shape, extrudeSettings);
-    const mat = new THREE.MeshStandardMaterial({
-      color: 0x0d1117, roughness: 0.2, metalness: 0.9,
-      emissive: exp.color, emissiveIntensity: 0.1,
-    });
-    const mesh = new THREE.Mesh(geo, mat);
-    mesh.rotation.x = Math.PI / 2;
-    mesh.userData = { nodeKey: exp.key, clickable: true };
-    pg.add(mesh);
-    allNodes.push(mesh);
-
-    const wf = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ color: exp.color, wireframe: true, transparent: true, opacity: 0.3 }));
-    wf.rotation.x = Math.PI / 2;
-    wf.scale.setScalar(1.05);
-    pg.add(wf);
-
-    const lbl = makeLabel(exp.name, 20, '#e2e8f0');
-    lbl.position.y = 3.2;
-    pg.add(lbl);
-    const subLbl = makeSmallLabel(exp.role, '#64748b');
-    subLbl.position.y = 2.2;
-    pg.add(subLbl);
-    const pLbl = makeSmallLabel(exp.period, exp.color === 0x00e5ff ? '#00e5ff' : '#a78bfa');
-    pLbl.position.y = 1.5;
-    pg.add(pLbl);
-
-    g.add(pg);
-  });
-
-  const lineGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, -6, 0), new THREE.Vector3(0, 8, 0)]);
-  const timeLine = new THREE.Line(lineGeo, new THREE.LineBasicMaterial({ color: 0x1a2a3a, transparent: true, opacity: 0.6 }));
-  g.add(timeLine);
-
-  scene.add(g);
-  sectionGroups.push(g);
-}
-
-// =============================================
-// SECTION 3: SKILLS
-// =============================================
-{
-  const g = new THREE.Group();
-  g.position.x = SECTION_X[3];
-
-  const skillGroups = [
-    { name: 'Languages & Data', color: 0x00e5ff, pos: [-7, 0, 0], skills: ['Python', 'SQL', 'R', 'C++', 'JS', 'Pandas', 'NumPy'] },
-    { name: 'ML & Engineering', color: 0x7c3aed, pos: [0, 0, -2], skills: ['XGBoost', 'SHAP', 'KMeans', 'NLP', 'ETL', 'Anomaly Detect.'] },
-    { name: 'Tools', color: 0xf59e0b, pos: [7, 0, 0], skills: ['Streamlit', 'Flask', 'PostgreSQL', 'Git', 'Playwright', 'React'] },
-  ];
-
-  skillGroups.forEach((sg, gi) => {
-    const pg = new THREE.Group();
-    pg.position.set(...sg.pos);
-
-    sg.skills.forEach((skill, si) => {
-      const phi = Math.acos(-1 + (2 * si) / sg.skills.length);
-      const theta = Math.sqrt(sg.skills.length * Math.PI) * phi;
-      const r = 3.5;
-      const bx = r * Math.sin(phi) * Math.cos(theta);
-      const by = r * Math.sin(phi) * Math.sin(theta);
-      const bz = r * Math.cos(phi);
-
-      const bm = new THREE.Mesh(
-        new THREE.SphereGeometry(0.22, 8, 8),
-        new THREE.MeshStandardMaterial({ color: sg.color, emissive: sg.color, emissiveIntensity: 0.7 })
-      );
-      bm.position.set(bx, by, bz);
-      pg.add(bm);
-
-      const lg = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, 0, 0), new THREE.Vector3(bx, by, bz)]);
-      const ll = new THREE.Line(lg, new THREE.LineBasicMaterial({ color: sg.color, transparent: true, opacity: 0.15 }));
-      pg.add(ll);
-    });
-
-    const hub = new THREE.Mesh(
-      new THREE.SphereGeometry(0.8, 16, 16),
-      new THREE.MeshStandardMaterial({ color: 0x0d1117, emissive: sg.color, emissiveIntensity: 0.25, roughness: 0.2, metalness: 0.8 })
-    );
-    pg.add(hub);
-
-    const lbl = makeLabel(sg.name, 16, '#e2e8f0');
-    lbl.position.y = 5;
-    lbl.scale.set(6, 1.5, 1);
-    pg.add(lbl);
-
-    g.add(pg);
-  });
-
-  scene.add(g);
-  sectionGroups.push(g);
-}
-
-// =============================================
-// SECTION 4: ATHLETICS
-// =============================================
-{
-  const g = new THREE.Group();
-  g.position.x = SECTION_X[4];
-
-  const athGeo = new THREE.IcosahedronGeometry(2.8, 2);
-  const athMat = new THREE.MeshStandardMaterial({
-    color: 0x0d1117, roughness: 0.05, metalness: 0.9,
-    emissive: 0xf59e0b, emissiveIntensity: 0.1,
-  });
-  const athMesh = new THREE.Mesh(athGeo, athMat);
-  athMesh.userData = { nodeKey: 'athletics', clickable: true };
-  g.add(athMesh);
-  allNodes.push(athMesh);
-
-  const athWf = new THREE.Mesh(athGeo, new THREE.MeshBasicMaterial({ color: 0xf59e0b, wireframe: true, transparent: true, opacity: 0.2 }));
-  athWf.scale.setScalar(1.06);
-  g.add(athWf);
-
-  [3.8, 5, 6.5].forEach((r, i) => {
-    const ring = new THREE.Mesh(
-      new THREE.TorusGeometry(r, 0.025, 16, 100),
-      new THREE.MeshBasicMaterial({ color: 0xf59e0b, transparent: true, opacity: 0.15 + i * 0.05 })
-    );
-    ring.rotation.x = Math.PI / (2 + i * 0.5);
-    ring.rotation.z = Math.PI / (3 + i);
-    g.add(ring);
-  });
-
-  const athLabel = makeLabel('D1 GOLF — UCSB', 22, '#f59e0b');
-  athLabel.position.y = 5;
-  g.add(athLabel);
-
-  const statsData = [
-    { val: '75.9', label: 'Scoring Avg', pos: [-7, 2, 0] },
-    { val: '52nd', label: 'National Rank', pos: [7, 0, -2] },
-    { val: '3.51+', label: "Comm'r's Honors", pos: [0, -4, -3] },
-  ];
-  statsData.forEach(s => {
-    const sg = new THREE.Group();
-    sg.position.set(...s.pos);
-    const sm = new THREE.Mesh(
-      new THREE.OctahedronGeometry(0.5, 0),
-      new THREE.MeshStandardMaterial({ color: 0xf59e0b, emissive: 0xf59e0b, emissiveIntensity: 0.8 })
-    );
-    sg.add(sm);
-    const vl = makeLabel(s.val, 20, '#f59e0b');
-    vl.position.y = 1.3; vl.scale.set(4, 1, 1);
-    sg.add(vl);
-    const ll = makeSmallLabel(s.label);
-    ll.position.y = 0.5;
-    sg.add(ll);
-    g.add(sg);
-  });
-
-  scene.add(g);
-  sectionGroups.push(g);
-}
-
-// =============================================
-// SECTION 5: CONTACT
-// =============================================
-{
-  const g = new THREE.Group();
-  g.position.x = SECTION_X[5];
-
-  const contacts = [
-    { icon: '✉', label: 'joshuachung@ucsb.edu', color: 0x00e5ff, pos: [-6, 3, 0] },
-    { icon: '💼', label: 'linkedin.com/in/joshua-chung858', color: 0x7c3aed, pos: [6, 2, -1] },
-    { icon: '⌨', label: 'github.com/josh11100', color: 0xf59e0b, pos: [-3, -3, 2] },
-    { icon: '📞', label: '(808) 745-5231', color: 0x00e5ff, pos: [3, -2, -3] },
-  ];
-
-  contacts.forEach(c => {
-    const pg = new THREE.Group();
-    pg.position.set(...c.pos);
-
-    const m = new THREE.Mesh(
-      new THREE.BoxGeometry(1.5, 1.5, 1.5),
-      new THREE.MeshStandardMaterial({ color: 0x0d1117, roughness: 0.2, metalness: 0.9, emissive: c.color, emissiveIntensity: 0.12 })
-    );
-    pg.add(m);
-
-    const wf = new THREE.Mesh(
-      new THREE.BoxGeometry(1.5, 1.5, 1.5),
-      new THREE.MeshBasicMaterial({ color: c.color, wireframe: true, transparent: true, opacity: 0.4 })
-    );
-    wf.scale.setScalar(1.1);
-    pg.add(wf);
-
-    const lbl = makeSmallLabel(c.label, '#94a3b8');
-    lbl.position.y = 1.8;
-    lbl.scale.set(8, 1, 1);
-    pg.add(lbl);
-
-    g.add(pg);
-  });
-
-  const finalLabel = makeLabel('LET\'S CONNECT', 24, '#e2e8f0');
-  finalLabel.position.y = 6.5;
-  g.add(finalLabel);
-
-  scene.add(g);
-  sectionGroups.push(g);
-}
-
-// =============================================
-// MOUSE INTERACTION & RAYCASTING
-// =============================================
-const raycaster = new THREE.Raycaster();
-const mouse = new THREE.Vector2();
-let hoveredNode = null;
-let mouseX = 0, mouseY = 0;
-let isOrbiting = false, orbitStart = { x: 0, y: 0 };
-let orbitDelta = { x: 0, y: 0 };
-
+// ---- Cursor ----
+const cursor = document.getElementById('cursor');
+const trail = document.getElementById('cursor-trail');
+let mx = 0, my = 0;
 document.addEventListener('mousemove', e => {
-  mouseX = e.clientX;
-  mouseY = e.clientY;
-  mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-  mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
-
-  document.getElementById('cdot').style.left = e.clientX + 'px';
-  document.getElementById('cdot').style.top = e.clientY + 'px';
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx + 'px';
+  cursor.style.top = my + 'px';
   setTimeout(() => {
-    document.getElementById('cring').style.left = e.clientX + 'px';
-    document.getElementById('cring').style.top = e.clientY + 'px';
+    trail.style.left = mx + 'px';
+    trail.style.top = my + 'px';
   }, 60);
-
-  if (isOrbiting) {
-    orbitDelta.x = (e.clientX - orbitStart.x) * 0.005;
-    orbitDelta.y = (e.clientY - orbitStart.y) * 0.005;
-  }
 });
-
-canvas.addEventListener('mousedown', e => {
-  isOrbiting = true;
-  orbitStart.x = e.clientX;
-  orbitStart.y = e.clientY;
-  orbitDelta = { x: 0, y: 0 };
-});
-
-canvas.addEventListener('mouseup', e => {
-  const wasDragging = Math.abs(orbitDelta.x) > 0.01 || Math.abs(orbitDelta.y) > 0.01;
-  isOrbiting = false;
-  orbitDelta = { x: 0, y: 0 };
-
-  if (!wasDragging && hoveredNode && hoveredNode.userData.nodeKey) {
-    openPanel(hoveredNode.userData.nodeKey);
-  }
-});
-
-window.addEventListener('wheel', e => {
-  if (e.deltaY > 0) navigateTo(Math.min(currentSection + 1, SECTIONS.length - 1));
-  else navigateTo(Math.max(currentSection - 1, 0));
-}, { passive: true });
-
-window.addEventListener('keydown', e => {
-  if (e.key === 'ArrowRight') navigateTo(Math.min(currentSection + 1, SECTIONS.length - 1));
-  if (e.key === 'ArrowLeft') navigateTo(Math.max(currentSection - 1, 0));
-  if (e.key === 'Escape') closePanel();
-});
-
-// =============================================
-// NAVIGATION
-// =============================================
-const sectionLabels = ['// 00 — Home', '// 01 — Projects', '// 02 — Experience', '// 03 — Skills', '// 04 — Athletics', '// 05 — Contact'];
-const sectionTitles = ['Joshua Chung', 'What I\'ve Built', 'Where I\'ve Worked', 'Technical Toolkit', 'Beyond the Terminal', "Let's Connect"];
-
-function navigateTo(idx) {
-  currentSection = idx;
-  camTarget.x = SECTION_X[idx];
-  camTarget.y = 0;
-  camTarget.z = 0;
-
-  // AUTO-CENTER: Reset rotation when navigating
-  targetOrbitX = 0;
-  targetOrbitY = 0;
-
-  document.querySelectorAll('.hud-btn').forEach((btn, i) => btn.classList.toggle('active', i === idx));
-  document.getElementById('sl-num').textContent = sectionLabels[idx];
-  document.getElementById('sl-title').textContent = sectionTitles[idx];
-  document.querySelectorAll('.mm-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
-  document.querySelectorAll('.mm-label').forEach((l, i) => l.classList.toggle('active', i === idx));
-}
-
-document.querySelectorAll('.hud-btn').forEach(btn => {
-  btn.addEventListener('click', () => navigateTo(parseInt(btn.dataset.section)));
-});
-
-const mmNodes = document.getElementById('mm-nodes');
-SECTIONS.forEach((s, i) => {
-  const node = document.createElement('div');
-  node.className = 'mm-node';
-  node.innerHTML = `<div class="mm-dot ${i === 0 ? 'active' : ''}"></div><span class="mm-label ${i === 0 ? 'active' : ''}">${s.title}</span>`;
-  node.addEventListener('click', () => navigateTo(i));
-  mmNodes.appendChild(node);
-});
-
-// =============================================
-// PANEL
-// =============================================
-const panel = document.getElementById('panel');
-function openPanel(key) {
-  const d = NODE_DATA[key];
-  if (!d) return;
-  document.getElementById('p-tag').textContent = d.tag;
-  document.getElementById('p-title').textContent = d.title;
-  document.getElementById('p-desc').textContent = d.desc;
-  document.getElementById('p-tags').innerHTML = d.tags.map(t => `<span class="ptag">${t}</span>`).join('');
-  document.getElementById('p-metrics').innerHTML = d.metrics.map(m => `<div class="pm"><div class="pm-val">${m.val}</div><div class="pm-label">${m.label}</div></div>`).join('');
-  document.getElementById('p-links').innerHTML = d.links.map(l => `<a href="${l.href}" target="_blank" class="panel-link">${l.text}</a>`).join('');
-  panel.classList.add('open');
-}
-function closePanel() { panel.classList.remove('open'); }
-document.getElementById('panel-close').addEventListener('click', closePanel);
-
-// =============================================
-// ANIMATION LOOP
-// =============================================
-let clock = new THREE.Clock();
-let targetOrbitX = 0, targetOrbitY = 0;
-
-function animate() {
-  requestAnimationFrame(animate);
-  const t = clock.getElapsedTime();
-
-  camPos.x += (camTarget.x - camPos.x) * 0.04;
-  camPos.y += (6 + camTarget.y - camPos.y) * 0.04;
-  camPos.z += (18 + camTarget.z - camPos.z) * 0.04;
-
-  if (isOrbiting) {
-    targetOrbitX += orbitDelta.x * 0.3;
-    targetOrbitY = Math.max(-0.4, Math.min(0.4, targetOrbitY + orbitDelta.y * 0.3));
-    orbitDelta.x *= 0.8;
-    orbitDelta.y *= 0.8;
-  } else {
-    const mx = (mouse.x * 0.5);
-    const my = (mouse.y * 0.3);
-    targetOrbitX += (mx - targetOrbitX) * 0.02;
-    targetOrbitY += (my - targetOrbitY) * 0.02;
-  }
-
-  // FIXED CAMERA LOGIC
-  const radius = 18;
-  const targetX = camPos.x;
-  const targetY = camPos.y - 2;
-  const targetZ = camPos.z;
-
-  camera.position.x = targetX + Math.sin(targetOrbitX) * radius;
-  camera.position.y = targetY + 8 + (targetOrbitY * 8); 
-  camera.position.z = targetZ + Math.cos(targetOrbitX) * radius;
-  camera.lookAt(targetX, targetY, targetZ);
-
-  const heroGroup = sectionGroups[0];
-  if (heroGroup.userData.satMeshes) {
-    heroGroup.userData.satMeshes.forEach((sm, i) => {
-      const cfg = heroGroup.userData.satellites[i];
-      sm.userData.angle = (sm.userData.angle || cfg.angle) + cfg.speed;
-      sm.position.x = Math.cos(sm.userData.angle) * cfg.r;
-      sm.position.z = Math.sin(sm.userData.angle) * cfg.r;
-      sm.position.y = Math.sin(sm.userData.angle * 0.7) * 1.5;
-    });
-  }
-
-  // NODE PULSE & ROTATION
-  sectionGroups.forEach((g, i) => {
-    g.position.y = Math.sin(t * 0.4 + i * 1.2) * 0.4;
-    g.children.forEach(child => {
-      if (child.userData?.satConfig) return;
-      
-      // Constant slow spin
-      child.rotation.y = t * (0.1 + i * 0.03);
-
-      // Pulse effect for interactive nodes
-      if (child.userData?.clickable) {
-        const scale = 1 + Math.sin(t * 2) * 0.05;
-        child.scale.set(scale, scale, scale);
-      }
-    });
+document.querySelectorAll('a, button, .project-card, .contact-item').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    cursor.style.width = '20px'; cursor.style.height = '20px';
   });
-
-  particles.rotation.y = t * 0.01;
-  raycaster.setFromCamera(mouse, camera);
-  const intersects = raycaster.intersectObjects(allNodes, false);
-  if (intersects.length > 0 && intersects[0].object.userData.clickable) {
-    hoveredNode = intersects[0].object;
-    canvas.style.cursor = 'none';
-    document.getElementById('cring').classList.add('hover');
-  } else {
-    hoveredNode = null;
-    document.getElementById('cring').classList.remove('hover');
-  }
-
-  renderer.render(scene, camera);
-}
-
-window.addEventListener('resize', () => {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
+  el.addEventListener('mouseleave', () => {
+    cursor.style.width = '12px'; cursor.style.height = '12px';
+  });
 });
 
-const loadBar = document.getElementById('load-bar');
-const loadText = document.getElementById('load-text');
-const loadSteps = ['Initializing scene...', 'Loading geometries...', 'Building ML nodes...', 'Placing satellites...', 'Ready.'];
-let step = 0;
-const loadInterval = setInterval(() => {
-  if (step >= loadSteps.length) {
-    clearInterval(loadInterval);
-    setTimeout(() => {
-      document.getElementById('loading').classList.add('hidden');
-      animate();
-    }, 400);
-    return;
-  }
-  loadBar.style.width = ((step + 1) / loadSteps.length * 100) + '%';
-  loadText.textContent = loadSteps[step];
-  step++;
-}, 280);
+// ---- Particle Canvas ----
+const canvas = document.getElementById('bg-canvas');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+window.addEventListener('resize', () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
 
-setTimeout(() => {
-  document.getElementById('controls-hint').style.opacity = '0';
-}, 5000);
+const PARTICLES = 80;
+const particles = Array.from({length: PARTICLES}, () => ({
+  x: Math.random() * canvas.width,
+  y: Math.random() * canvas.height,
+  vx: (Math.random() - 0.5) * 0.3,
+  vy: (Math.random() - 0.5) * 0.3,
+  r: Math.random() * 1.5 + 0.5,
+  opacity: Math.random() * 0.5 + 0.1
+}));
+
+function drawParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p => {
+    p.x += p.vx; p.y += p.vy;
+    if (p.x < 0) p.x = canvas.width;
+    if (p.x > canvas.width) p.x = 0;
+    if (p.y < 0) p.y = canvas.height;
+    if (p.y > canvas.height) p.y = 0;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(0,229,255,${p.opacity})`;
+    ctx.fill();
+  });
+  // Draw connections
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if (dist < 120) {
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.strokeStyle = `rgba(0,229,255,${0.08 * (1 - dist/120)})`;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+    }
+  }
+  requestAnimationFrame(drawParticles);
+}
+drawParticles();
+
+// ---- Gaucho Insights Mini Viz (ROC Curve style) ----
+const vizEl = document.getElementById('viz-gaucho');
+if (vizEl) {
+  const vc = document.createElement('canvas');
+  vc.width = vizEl.offsetWidth || 300;
+  vc.height = 220;
+  vc.style.width = '100%'; vc.style.height = '100%';
+  vizEl.appendChild(vc);
+  const vctx = vc.getContext('2d');
+  
+  // Draw a mock ROC curve
+  const w = vc.width, h = vc.height;
+  vctx.fillStyle = 'rgba(0,0,0,0)';
+  vctx.fillRect(0,0,w,h);
+  
+  // Grid
+  vctx.strokeStyle = 'rgba(0,229,255,0.06)';
+  vctx.lineWidth = 1;
+  for (let i = 0; i <= 4; i++) {
+    vctx.beginPath();
+    vctx.moveTo(40 + (w-60)*i/4, 10);
+    vctx.lineTo(40 + (w-60)*i/4, h-30);
+    vctx.stroke();
+    vctx.beginPath();
+    vctx.moveTo(40, 10 + (h-40)*i/4);
+    vctx.lineTo(w-20, 10 + (h-40)*i/4);
+    vctx.stroke();
+  }
+  
+  // Diagonal (random baseline)
+  vctx.strokeStyle = 'rgba(255,255,255,0.1)';
+  vctx.setLineDash([4, 4]);
+  vctx.beginPath();
+  vctx.moveTo(40, h-30);
+  vctx.lineTo(w-20, 10);
+  vctx.stroke();
+  vctx.setLineDash([]);
+  
+  // ROC curve (approximated for 0.847 AUC)
+  const rocPoints = [
+    [0, 0], [0.02, 0.22], [0.05, 0.42], [0.08, 0.58],
+    [0.12, 0.70], [0.18, 0.79], [0.27, 0.86], [0.40, 0.91],
+    [0.55, 0.95], [0.72, 0.97], [0.88, 0.99], [1, 1]
+  ];
+  
+  // Gradient fill under curve
+  const grad = vctx.createLinearGradient(40, 10, 40, h-30);
+  grad.addColorStop(0, 'rgba(0,229,255,0.18)');
+  grad.addColorStop(1, 'rgba(0,229,255,0.0)');
+  vctx.beginPath();
+  rocPoints.forEach(([x, y], i) => {
+    const px = 40 + x * (w - 60);
+    const py = (h - 30) - y * (h - 40);
+    if (i === 0) vctx.moveTo(px, py);
+    else vctx.lineTo(px, py);
+  });
+  vctx.lineTo(w-20, h-30); vctx.lineTo(40, h-30); vctx.closePath();
+  vctx.fillStyle = grad; vctx.fill();
+  
+  // ROC line
+  vctx.strokeStyle = '#00e5ff';
+  vctx.lineWidth = 2;
+  vctx.beginPath();
+  rocPoints.forEach(([x, y], i) => {
+    const px = 40 + x * (w - 60);
+    const py = (h - 30) - y * (h - 40);
+    if (i === 0) vctx.moveTo(px, py);
+    else vctx.lineTo(px, py);
+  });
+  vctx.stroke();
+  
+  // Label
+  vctx.fillStyle = 'rgba(0,229,255,0.8)';
+  vctx.font = '500 11px JetBrains Mono, monospace';
+  vctx.fillText('AUC = 0.847', w - 110, 30);
+  
+  vctx.fillStyle = 'rgba(100,116,139,0.8)';
+  vctx.font = '10px JetBrains Mono, monospace';
+  vctx.fillText('FPR', w-30, h-15);
+  vctx.save();
+  vctx.translate(14, h/2);
+  vctx.rotate(-Math.PI/2);
+  vctx.fillText('TPR', 0, 0);
+  vctx.restore();
+}
+
+// ---- Scroll Reveal ----
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 80);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+reveals.forEach(el => observer.observe(el));
 </script>
 </body>
 </html>
