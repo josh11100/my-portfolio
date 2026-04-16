@@ -167,30 +167,89 @@
   .skill-fill.animate { transform: scaleX(1); }
 
   /* PROJECTS */
-  .projects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+  .projects-grid { display: grid; grid-template-columns: 1fr; gap: 2px; }
   .project-card {
     background: var(--card); border: 1px solid var(--border);
-    padding: 32px; position: relative; overflow: hidden;
-    transition: border-color 0.3s, transform 0.3s;
-    display: flex; flex-direction: column; gap: 16px;
+    position: relative; overflow: hidden;
+    transition: border-color 0.3s;
+    display: grid; grid-template-columns: 380px 1fr;
+    min-height: 320px;
   }
   .project-card::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0;
-    height: 2px; background: linear-gradient(90deg, var(--accent), transparent);
-    transform: scaleX(0); transform-origin: left;
-    transition: transform 0.4s;
+    content: ''; position: absolute; top: 0; left: 0; bottom: 0;
+    width: 2px; background: linear-gradient(180deg, var(--accent), transparent);
+    transform: scaleY(0); transform-origin: top;
+    transition: transform 0.4s; z-index: 2;
   }
-  .project-card:hover { border-color: rgba(0,220,180,0.4); transform: translateY(-4px); }
-  .project-card:hover::before { transform: scaleX(1); }
+  .project-card:hover { border-color: rgba(0,220,180,0.4); }
+  .project-card:hover::before { transform: scaleY(1); }
+  .project-preview {
+    position: relative; overflow: hidden;
+    background: #040609; border-right: 1px solid var(--border);
+    display: flex; flex-direction: column;
+  }
+  .preview-bar {
+    display: flex; align-items: center; gap: 6px;
+    padding: 10px 14px; background: rgba(0,0,0,0.5);
+    border-bottom: 1px solid var(--border); flex-shrink: 0;
+  }
+  .preview-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .preview-dot:nth-child(1) { background: #ff5f56; }
+  .preview-dot:nth-child(2) { background: #ffbd2e; }
+  .preview-dot:nth-child(3) { background: #27c93f; }
+  .preview-url {
+    flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+    border-radius: 3px; padding: 3px 10px; font-size: 0.62rem;
+    color: var(--muted); overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+    margin-left: 8px; font-family: 'Space Mono', monospace;
+  }
+  .preview-frame-wrap {
+    flex: 1; position: relative; overflow: hidden; cursor: pointer;
+  }
+  .preview-frame-wrap iframe {
+    width: 150%; height: 150%; border: none;
+    transform: scale(0.667); transform-origin: top left;
+    pointer-events: none;
+  }
+  .preview-overlay {
+    position: absolute; inset: 0;
+    background: rgba(0,0,0,0.55);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .preview-frame-wrap:hover .preview-overlay { opacity: 1; }
+  .preview-launch-btn {
+    padding: 12px 26px; background: var(--accent); color: var(--bg);
+    font-family: 'Space Mono', monospace; font-size: 0.72rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    text-decoration: none;
+    clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%);
+    transition: background 0.2s;
+  }
+  .preview-launch-btn:hover { background: #00ffcf; }
+  .project-info {
+    padding: 32px 36px; display: flex; flex-direction: column; gap: 14px;
+  }
   .project-num {
     font-size: 0.6rem; letter-spacing: 0.2em; color: var(--muted);
     font-family: 'Space Mono', monospace;
   }
   .project-title {
-    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.25rem;
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.4rem;
     line-height: 1.1;
   }
   .project-desc { font-size: 0.78rem; color: var(--muted); line-height: 1.7; flex: 1; }
+  .project-stats { display: flex; gap: 12px; flex-wrap: wrap; }
+  .pstat {
+    display: flex; flex-direction: column; gap: 2px;
+    padding: 10px 14px; border: 1px solid var(--border);
+    background: rgba(0,221,180,0.03);
+  }
+  .pstat-num {
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.15rem;
+    color: var(--accent); line-height: 1;
+  }
+  .pstat-label { font-size: 0.57rem; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; }
   .project-tags { display: flex; flex-wrap: wrap; gap: 6px; }
   .tag {
     padding: 4px 10px; font-size: 0.6rem; letter-spacing: 0.1em;
@@ -198,6 +257,26 @@
     color: var(--muted); background: rgba(255,255,255,0.02);
   }
   .tag.accent { border-color: rgba(0,221,180,0.4); color: var(--accent); }
+  .project-links { display: flex; gap: 10px; margin-top: 6px; flex-wrap: wrap; }
+  .proj-link {
+    padding: 10px 20px; font-family: 'Space Mono', monospace;
+    font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase;
+    text-decoration: none; transition: all 0.2s; display: inline-flex;
+    align-items: center; gap: 8px;
+  }
+  .proj-link-primary {
+    background: var(--accent); color: var(--bg);
+    clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%);
+  }
+  .proj-link-primary:hover { background: #00ffcf; }
+  .proj-link-ghost { border: 1px solid var(--border); color: var(--muted); }
+  .proj-link-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+  @media (max-width: 900px) {
+    .project-card { grid-template-columns: 1fr; }
+    .project-preview { min-height: 200px; }
+    .preview-frame-wrap iframe { width: 200%; height: 200%; transform: scale(0.5); }
+  }
 
   /* EXPERIENCE */
   .exp-list { display: flex; flex-direction: column; gap: 0; }
@@ -325,6 +404,7 @@
     <li><a href="#projects">Work</a></li>
     <li><a href="#experience">Experience</a></li>
     <li><a href="#contact">Contact</a></li>
+    <li><a href="/resume.pdf" target="_blank" style="color:var(--accent);border:1px solid rgba(0,221,180,0.3);padding:6px 14px;">Resume ↗</a></li>
   </ul>
 </nav>
 
@@ -412,41 +492,124 @@
   <h2 class="section-title reveal">Selected Work</h2>
   <div class="projects-grid">
 
+    <!-- GAUCHO INSIGHTS -->
     <div class="project-card reveal">
-      <div class="project-num">001</div>
-      <div class="project-title">Gaucho Insights</div>
-      <p class="project-desc">Async scraper + ETL pipeline across 1,000+ profiles and 70,000+ records. Applied KL-divergence anomaly detection, KMeans clustering, and cosine similarity. Deployed to 100+ active users at UCSB.</p>
-      <div class="project-tags">
-        <span class="tag accent">Python</span>
-        <span class="tag">Streamlit</span>
-        <span class="tag">Scikit-learn</span>
-        <span class="tag">NLP</span>
-        <span class="tag">Playwright</span>
+      <div class="project-preview">
+        <div class="preview-bar">
+          <div class="preview-dot"></div>
+          <div class="preview-dot"></div>
+          <div class="preview-dot"></div>
+          <div class="preview-url">ucsb-insight.streamlit.app</div>
+        </div>
+        <div class="preview-frame-wrap" onclick="window.open('https://ucsb-insight.streamlit.app/','_blank')">
+          <iframe src="https://ucsb-insight.streamlit.app/?embed=true" loading="lazy" title="Gaucho Insights" scrolling="no"></iframe>
+          <div class="preview-overlay">
+            <a href="https://ucsb-insight.streamlit.app/" target="_blank" class="preview-launch-btn">↗ Open Live App</a>
+          </div>
+        </div>
+      </div>
+      <div class="project-info">
+        <div class="project-num">001 / 003</div>
+        <div class="project-title">Gaucho Insights</div>
+        <p class="project-desc">Engineered an async scraper extracting data from 1,000+ UCSB profiles and built a Pandas ETL pipeline merging 70,000+ records via fuzzy matching. Applied 5 statistical and ML methods — KL-divergence anomaly detection, KMeans clustering, and cosine similarity — to enable population-level analysis across all UCSB departments.</p>
+        <div class="project-stats">
+          <div class="pstat"><div class="pstat-num">100+</div><div class="pstat-label">Active Users</div></div>
+          <div class="pstat"><div class="pstat-num">70K+</div><div class="pstat-label">Records</div></div>
+          <div class="pstat"><div class="pstat-num">1K+</div><div class="pstat-label">Profiles</div></div>
+          <div class="pstat"><div class="pstat-num">5</div><div class="pstat-label">ML Methods</div></div>
+        </div>
+        <div class="project-tags">
+          <span class="tag accent">Python</span>
+          <span class="tag">Streamlit</span>
+          <span class="tag">Scikit-learn</span>
+          <span class="tag">NLP</span>
+          <span class="tag">Playwright</span>
+          <span class="tag">Pandas</span>
+        </div>
+        <div class="project-links">
+          <a href="https://ucsb-insight.streamlit.app/" target="_blank" class="proj-link proj-link-primary">↗ Live Demo</a>
+          <a href="https://github.com/josh11100" target="_blank" class="proj-link proj-link-ghost">◆ GitHub</a>
+        </div>
       </div>
     </div>
 
+    <!-- CHURNIQ -->
     <div class="project-card reveal">
-      <div class="project-num">002</div>
-      <div class="project-title">ChurnIQ</div>
-      <p class="project-desc">End-to-end churn prediction pipeline on 7,000+ records. XGBoost classifier with class-imbalance correction — ROC-AUC 0.847, 79% recall. SHAP TreeExplainer for per-prediction waterfall explanations.</p>
-      <div class="project-tags">
-        <span class="tag accent">XGBoost</span>
-        <span class="tag">SHAP</span>
-        <span class="tag">Streamlit</span>
-        <span class="tag">Sklearn</span>
-        <span class="tag">Pandas</span>
+      <div class="project-preview">
+        <div class="preview-bar">
+          <div class="preview-dot"></div>
+          <div class="preview-dot"></div>
+          <div class="preview-dot"></div>
+          <div class="preview-url">churn-predictor-kzezwgyyfc7wsncj9ie6m.streamlit.app</div>
+        </div>
+        <div class="preview-frame-wrap" onclick="window.open('https://churn-predictor-kzezwgvyyfc7wsncj9ie6m.streamlit.app/','_blank')">
+          <iframe src="https://churn-predictor-kzezwgvyyfc7wsncj9ie6m.streamlit.app/?embed=true" loading="lazy" title="ChurnIQ" scrolling="no"></iframe>
+          <div class="preview-overlay">
+            <a href="https://churn-predictor-kzezwgvyyfc7wsncj9ie6m.streamlit.app/" target="_blank" class="preview-launch-btn">↗ Open Live App</a>
+          </div>
+        </div>
+      </div>
+      <div class="project-info">
+        <div class="project-num">002 / 003</div>
+        <div class="project-title">ChurnIQ</div>
+        <p class="project-desc">End-to-end churn prediction pipeline on 7,000+ records. XGBoost classifier with class-imbalance correction outperforms Logistic Regression baseline. SHAP TreeExplainer generates per-prediction waterfall explanations. Streamlit dashboard supports single-record scoring and bulk CSV upload with actionable risk tiers.</p>
+        <div class="project-stats">
+          <div class="pstat"><div class="pstat-num">0.847</div><div class="pstat-label">ROC-AUC</div></div>
+          <div class="pstat"><div class="pstat-num">79%</div><div class="pstat-label">Recall</div></div>
+          <div class="pstat"><div class="pstat-num">7K+</div><div class="pstat-label">Records</div></div>
+        </div>
+        <div class="project-tags">
+          <span class="tag accent">XGBoost</span>
+          <span class="tag">SHAP</span>
+          <span class="tag">Streamlit</span>
+          <span class="tag">Scikit-learn</span>
+          <span class="tag">Pandas</span>
+        </div>
+        <div class="project-links">
+          <a href="https://churn-predictor-kzezwgvyyfc7wsncj9ie6m.streamlit.app/" target="_blank" class="proj-link proj-link-primary">↗ Live Demo</a>
+          <a href="https://github.com/josh11100" target="_blank" class="proj-link proj-link-ghost">◆ GitHub</a>
+        </div>
       </div>
     </div>
 
+    <!-- FAMILY TREE -->
     <div class="project-card reveal">
-      <div class="project-num">003</div>
-      <div class="project-title">Family Tree Program</div>
-      <p class="project-desc">C++ family tree system supporting member insertion, relationship queries, and multi-generational ancestry traversal using dynamic graph data structures and optimized lookup algorithms.</p>
-      <div class="project-tags">
-        <span class="tag accent">C++</span>
-        <span class="tag">Data Structures</span>
-        <span class="tag">Graph Theory</span>
-        <span class="tag">Algorithms</span>
+      <div class="project-preview">
+        <div class="preview-bar">
+          <div class="preview-dot"></div>
+          <div class="preview-dot"></div>
+          <div class="preview-dot"></div>
+          <div class="preview-url">github.com/josh11100</div>
+        </div>
+        <div class="preview-frame-wrap" onclick="window.open('https://github.com/josh11100','_blank')" style="display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#040609,#0b1120);">
+          <div style="text-align:center;color:var(--muted);padding:32px;">
+            <div style="font-size:3.5rem;opacity:0.2;margin-bottom:16px;">⬡</div>
+            <div style="font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;">C++ Project</div>
+            <div style="font-size:0.68rem;line-height:1.6;">Dynamic graph traversal<br>Command-line interface</div>
+          </div>
+          <div class="preview-overlay">
+            <a href="https://github.com/josh11100" target="_blank" class="preview-launch-btn">↗ View on GitHub</a>
+          </div>
+        </div>
+      </div>
+      <div class="project-info">
+        <div class="project-num">003 / 003</div>
+        <div class="project-title">Family Tree Program</div>
+        <p class="project-desc">C++ family tree system supporting member insertion, relationship queries, and multi-generational ancestry traversal using dynamic graph data structures. Built with a command-line interface, efficient file parsing, modular class design, and optimized traversal algorithms for performant lookups across large family networks.</p>
+        <div class="project-stats">
+          <div class="pstat"><div class="pstat-num">C++</div><div class="pstat-label">Language</div></div>
+          <div class="pstat"><div class="pstat-num">O(n)</div><div class="pstat-label">Traversal</div></div>
+        </div>
+        <div class="project-tags">
+          <span class="tag accent">C++</span>
+          <span class="tag">Data Structures</span>
+          <span class="tag">Graph Theory</span>
+          <span class="tag">Algorithms</span>
+          <span class="tag">OOP</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/josh11100" target="_blank" class="proj-link proj-link-primary">◆ View on GitHub</a>
+        </div>
       </div>
     </div>
 
@@ -551,6 +714,10 @@
         <span class="contact-info-val">UCSB — Statistics & Data Science</span>
       </div>
       <div class="contact-info-item">
+        <span class="contact-info-label">GPA</span>
+        <span class="contact-info-val">3.3 · Big West Commissioner's Honors</span>
+      </div>
+      <div class="contact-info-item">
         <span class="contact-info-label">Phone</span>
         <span class="contact-info-val">808-745-5231</span>
       </div>
@@ -559,8 +726,12 @@
 </section>
 
 <footer>
-  <span>© 2026 Joshua Chung</span>
-  <span>Statistics & Data Science · UCSB</span>
+  <span>© 2026 Joshua Chung · Statistics & Data Science · UCSB · GPA 3.3</span>
+  <div style="display:flex;gap:24px;align-items:center;">
+    <a href="https://github.com/josh11100" target="_blank" style="color:var(--muted);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--muted)'">GitHub</a>
+    <a href="https://www.linkedin.com/in/joshua-chung858/" target="_blank" style="color:var(--muted);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--muted)'">LinkedIn</a>
+    <a href="/resume.pdf" target="_blank" style="padding:8px 20px;background:var(--accent);color:var(--bg);text-decoration:none;font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;clip-path:polygon(0 0,calc(100% - 7px) 0,100% 7px,100% 100%,0 100%);">↓ Resume</a>
+  </div>
 </footer>
 
 <script>
