@@ -389,6 +389,326 @@
     footer { flex-direction: column; gap: 12px; text-align: center; }
     .hero-content { padding: 0 24px; }
   }
+
+  /* ═══════════════════════════════════════════
+     MANGA / ANIME LAYER
+  ═══════════════════════════════════════════ */
+
+  /* Speech bubble — round */
+  .bubble {
+    position: relative; display: inline-block;
+    background: #fff; color: #0a0a0a;
+    border: 3px solid #0a0a0a;
+    border-radius: 20px;
+    padding: 14px 20px;
+    font-family: 'Syne', sans-serif; font-weight: 700;
+    font-size: 0.88rem; line-height: 1.5;
+    max-width: 320px; z-index: 10;
+    box-shadow: 4px 4px 0 #0a0a0a;
+  }
+  .bubble::after {
+    content: ''; position: absolute;
+    border: 14px solid transparent;
+    border-top-color: #0a0a0a;
+    bottom: -31px; left: 28px;
+  }
+  .bubble::before {
+    content: ''; position: absolute;
+    border: 12px solid transparent;
+    border-top-color: #fff;
+    bottom: -24px; left: 30px; z-index: 1;
+  }
+  /* Thought bubble */
+  .bubble-thought {
+    border-radius: 50px;
+    box-shadow: 4px 4px 0 #0a0a0a;
+  }
+  .bubble-thought::after { display: none; }
+  .bubble-thought::before { display: none; }
+  .bubble-thought .thought-dots {
+    position: absolute; bottom: -36px; left: 20px;
+    display: flex; gap: 5px; align-items: flex-end;
+  }
+  .bubble-thought .thought-dots span {
+    background: #0a0a0a; border-radius: 50%; display: block;
+  }
+  .bubble-thought .thought-dots span:nth-child(1) { width: 6px; height: 6px; }
+  .bubble-thought .thought-dots span:nth-child(2) { width: 9px; height: 9px; }
+  .bubble-thought .thought-dots span:nth-child(3) { width: 12px; height: 12px; }
+
+  /* Shout / impact bubble */
+  .bubble-shout {
+    background: #fffbe6; border: 3px solid #0a0a0a;
+    clip-path: polygon(5% 0%,20% 0%,25% 5%,75% 5%,80% 0%,95% 0%,100% 5%,100% 95%,95% 100%,80% 100%,75% 95%,25% 95%,20% 100%,5% 100%,0% 95%,0% 5%);
+    border-radius: 0; box-shadow: none;
+    padding: 18px 24px;
+    font-size: 1rem; color: #1a0a00;
+  }
+  .bubble-shout::before, .bubble-shout::after { display: none; }
+
+  /* Explosion / emphasis bubble (jagged star shape via SVG bg) */
+  .bubble-explosion {
+    background: #fff44f; border: none; border-radius: 0;
+    box-shadow: none; padding: 16px 22px;
+    color: #0a0a0a;
+    clip-path: polygon(50% 0%,61% 20%,79% 8%,76% 29%,97% 25%,84% 42%,100% 50%,84% 58%,97% 75%,76% 71%,79% 92%,61% 80%,50% 100%,39% 80%,21% 92%,24% 71%,3% 75%,16% 58%,0% 50%,16% 42%,3% 25%,24% 29%,21% 8%,39% 20%);
+    display: flex; align-items: center; justify-content: center;
+    width: 120px; height: 120px; text-align: center;
+    font-family: 'Syne', sans-serif; font-weight: 900; font-size: 0.75rem;
+    line-height: 1.2;
+  }
+  .bubble-explosion::before, .bubble-explosion::after { display: none; }
+
+  /* Manga onomatopoeia — big bold impact words */
+  .manga-sfx {
+    font-family: 'Syne', sans-serif; font-weight: 900;
+    font-size: clamp(3rem, 8vw, 6rem);
+    color: transparent;
+    -webkit-text-stroke: 3px var(--accent);
+    letter-spacing: -0.03em; line-height: 1;
+    transform: rotate(-8deg) skewX(-6deg);
+    display: inline-block; pointer-events: none;
+    opacity: 0.18; position: absolute;
+  }
+
+  /* Speed lines radial burst behind a section */
+  .speed-lines {
+    position: absolute; inset: 0; pointer-events: none;
+    overflow: hidden; z-index: 0;
+  }
+  .speed-lines svg { width: 100%; height: 100%; opacity: 0.06; }
+
+  /* Manga panel thick borders on section */
+  .manga-panel {
+    border: 4px solid rgba(255,255,255,0.08);
+    box-shadow: inset 0 0 0 1px rgba(0,221,180,0.1), 8px 8px 0 rgba(0,221,180,0.04);
+    position: relative;
+  }
+
+  /* Halftone dot overlay */
+  .halftone {
+    position: absolute; inset: 0; pointer-events: none; z-index: 0; opacity: 0.04;
+    background-image: radial-gradient(circle, #00ddb4 1px, transparent 1px);
+    background-size: 18px 18px;
+  }
+
+  /* Character name plate (manga character intro card) */
+  .char-plate {
+    display: flex; align-items: stretch; gap: 0;
+    border: 3px solid #fff; max-width: 340px;
+    box-shadow: 6px 6px 0 var(--accent);
+  }
+  .char-plate-accent {
+    width: 8px; background: var(--accent); flex-shrink: 0;
+  }
+  .char-plate-body {
+    background: rgba(5,8,16,0.95); padding: 14px 18px;
+    border-left: 1px solid rgba(255,255,255,0.1);
+  }
+  .char-plate-name {
+    font-family: 'Syne', sans-serif; font-weight: 900;
+    font-size: 1.1rem; color: #fff; margin-bottom: 4px;
+  }
+  .char-plate-title { font-size: 0.65rem; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; }
+
+  /* Section intro bubble row */
+  .manga-intro {
+    display: flex; align-items: flex-end; gap: 20px;
+    margin-bottom: 48px; flex-wrap: wrap;
+  }
+  .manga-intro .char-plate { flex-shrink: 0; }
+
+  /* Panel number (manga page numbering style) */
+  .panel-num {
+    font-family: 'Syne', sans-serif; font-weight: 900; font-size: 4rem;
+    color: transparent; -webkit-text-stroke: 1px rgba(0,221,180,0.2);
+    position: absolute; top: 16px; right: 24px; line-height: 1;
+    pointer-events: none; user-select: none;
+  }
+
+  /* Manga emphasis lines (diagonal ruled background) */
+  .manga-ruled {
+    background-image: repeating-linear-gradient(
+      -45deg, transparent, transparent 6px,
+      rgba(0,221,180,0.025) 6px, rgba(0,221,180,0.025) 7px
+    );
+  }
+
+  /* ── BUBBLE ANIMATIONS ─────────────────────────────── */
+
+  /* All bubbles start hidden for scroll-trigger */
+  .bubble, .bubble-shout, .bubble-thought, .bubble-explosion {
+    opacity: 0;
+  }
+  .bubble.b-visible, .bubble-shout.b-visible,
+  .bubble-thought.b-visible, .bubble-explosion.b-visible {
+    opacity: 1;
+  }
+
+  /* 1. Round bubble — bounces in from below with tail spring */
+  @keyframes bubble-in {
+    0%   { transform: scale(0) translateY(20px); opacity: 0; transform-origin: bottom left; }
+    55%  { transform: scale(1.08) translateY(-4px); opacity: 1; transform-origin: bottom left; }
+    75%  { transform: scale(0.97) translateY(1px); transform-origin: bottom left; }
+    100% { transform: scale(1) translateY(0); opacity: 1; transform-origin: bottom left; }
+  }
+  .bubble.b-visible {
+    animation: bubble-in 0.52s cubic-bezier(0.34,1.4,0.64,1) forwards;
+  }
+
+  /* Tail wiggle after bubble appears */
+  @keyframes tail-wag {
+    0%,80%,100% { transform: rotate(0deg); }
+    85% { transform: rotate(-8deg); }
+    92% { transform: rotate(5deg); }
+  }
+  .bubble.b-visible::after,
+  .bubble.b-visible::before {
+    animation: tail-wag 2.4s ease-in-out 0.6s infinite;
+    transform-origin: top center;
+  }
+
+  /* Hover: slight jiggle */
+  @keyframes bubble-hover-jiggle {
+    0%,100% { transform: scale(1) rotate(0deg); }
+    25% { transform: scale(1.03) rotate(-1deg); }
+    75% { transform: scale(1.03) rotate(1deg); }
+  }
+  .bubble:hover {
+    animation: bubble-hover-jiggle 0.4s ease-in-out;
+    cursor: default;
+  }
+
+  /* 2. Thought bubble — floats up softly + thought dots cascade */
+  @keyframes thought-float-in {
+    0%   { transform: translateY(30px) scale(0.8); opacity: 0; }
+    60%  { transform: translateY(-6px) scale(1.04); opacity: 1; }
+    100% { transform: translateY(0) scale(1); opacity: 1; }
+  }
+  .bubble-thought.b-visible {
+    animation: thought-float-in 0.65s cubic-bezier(0.22,1,0.36,1) forwards;
+  }
+  /* Float idle */
+  @keyframes thought-idle {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+  }
+  .bubble-thought.b-visible {
+    animation: thought-float-in 0.65s cubic-bezier(0.22,1,0.36,1) forwards,
+               thought-idle 3.5s ease-in-out 0.8s infinite;
+  }
+  /* Thought dots cascade in */
+  .bubble-thought .thought-dots span {
+    opacity: 0; transform: scale(0);
+    transition: opacity 0.25s, transform 0.25s;
+  }
+  .bubble-thought.b-visible .thought-dots span:nth-child(1) {
+    animation: dot-pop 0.3s ease 0.4s forwards;
+  }
+  .bubble-thought.b-visible .thought-dots span:nth-child(2) {
+    animation: dot-pop 0.3s ease 0.55s forwards;
+  }
+  .bubble-thought.b-visible .thought-dots span:nth-child(3) {
+    animation: dot-pop 0.3s ease 0.7s forwards;
+  }
+  @keyframes dot-pop {
+    0%   { opacity: 0; transform: scale(0); }
+    70%  { opacity: 1; transform: scale(1.3); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+  /* Dot pulse idle */
+  .bubble-thought.b-visible .thought-dots span {
+    animation: dot-pulse 2s ease-in-out infinite;
+  }
+  .bubble-thought.b-visible .thought-dots span:nth-child(1) { animation-delay: 0s; }
+  .bubble-thought.b-visible .thought-dots span:nth-child(2) { animation-delay: 0.2s; }
+  .bubble-thought.b-visible .thought-dots span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes dot-pulse {
+    0%,100% { transform: scale(1); opacity: 0.7; }
+    50% { transform: scale(1.4); opacity: 1; }
+  }
+
+  /* 3. Shout bubble — slams in with shake */
+  @keyframes shout-slam {
+    0%   { transform: scale(0.4) rotate(-4deg); opacity: 0; }
+    40%  { transform: scale(1.12) rotate(2deg); opacity: 1; }
+    60%  { transform: scale(0.97) rotate(-1deg); }
+    75%  { transform: scale(1.04) rotate(0.5deg); }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+  .bubble-shout.b-visible {
+    animation: shout-slam 0.55s cubic-bezier(0.34,1.3,0.64,1) forwards;
+  }
+  /* Shout flicker to simulate manga ink */
+  @keyframes shout-flicker {
+    0%,95%,100% { filter: none; }
+    96% { filter: brightness(1.5) contrast(1.2); }
+    98% { filter: none; }
+  }
+  .bubble-shout.b-visible {
+    animation: shout-slam 0.55s cubic-bezier(0.34,1.3,0.64,1) forwards,
+               shout-flicker 4s ease 1.2s infinite;
+  }
+
+  /* 4. Explosion star — spins in + pulses */
+  @keyframes explosion-in {
+    0%   { transform: scale(0) rotate(-90deg); opacity: 0; }
+    50%  { transform: scale(1.2) rotate(10deg); opacity: 1; }
+    75%  { transform: scale(0.92) rotate(-5deg); }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+  @keyframes explosion-pulse {
+    0%,100% { transform: scale(1) rotate(0deg); }
+    50% { transform: scale(1.06) rotate(3deg); }
+  }
+  .bubble-explosion.b-visible {
+    animation: explosion-in 0.6s cubic-bezier(0.34,1.5,0.64,1) forwards,
+               explosion-pulse 2.2s ease-in-out 0.7s infinite;
+  }
+
+  /* 5. Wobble animation for sfx elements */
+  @keyframes wobble {
+    0%,100% { transform: rotate(-8deg) skewX(-6deg) scale(1); }
+    50% { transform: rotate(-6deg) skewX(-4deg) scale(1.04); }
+  }
+  .manga-sfx { animation: wobble 3s ease-in-out infinite; }
+
+  /* 6. Char plate slides in from left */
+  @keyframes plate-slide-in {
+    0%   { transform: translateX(-40px); opacity: 0; }
+    60%  { transform: translateX(4px); opacity: 1; }
+    100% { transform: translateX(0); opacity: 1; }
+  }
+  .char-plate {
+    opacity: 0;
+    transition: none;
+  }
+  .char-plate.b-visible {
+    animation: plate-slide-in 0.5s cubic-bezier(0.22,1,0.36,1) forwards;
+  }
+
+  /* 7. Typewriter text inside bubbles */
+  .bubble-typewriter .bub-text { opacity: 0; }
+  .bubble-typewriter.b-visible .bub-text {
+    opacity: 1;
+    overflow: hidden;
+    white-space: normal;
+    display: inline;
+  }
+  /* Per-character fade-in for typewriter bubbles */
+  .bub-char {
+    display: inline;
+    opacity: 0;
+    animation: char-in 0.04s forwards;
+  }
+  @keyframes char-in { to { opacity: 1; } }
+
+  /* Manga panel divider */
+  .manga-divider {
+    height: 6px; margin: 0;
+    background: repeating-linear-gradient(90deg, var(--accent) 0px, var(--accent) 40px, transparent 40px, transparent 46px, #fff 46px, #fff 50px, transparent 50px, transparent 56px);
+    opacity: 0.15; border: none;
+  }
 </style>
 </head>
 <body>
@@ -411,17 +731,45 @@
 <!-- HERO -->
 <section id="hero">
   <canvas id="canvas3d"></canvas>
+  <!-- Manga speed lines SVG background -->
+  <div class="speed-lines" style="opacity:0.07;">
+    <svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <defs><radialGradient id="slfade" cx="75%" cy="45%"><stop offset="0%" stop-color="#00ddb4" stop-opacity="1"/><stop offset="100%" stop-color="#00ddb4" stop-opacity="0"/></radialGradient></defs>
+      <g stroke="url(#slfade)" stroke-width="0.6" opacity="0.9">
+        <line x1="900" y1="360" x2="0" y2="0"/><line x1="900" y1="360" x2="100" y2="0"/><line x1="900" y1="360" x2="200" y2="0"/><line x1="900" y1="360" x2="300" y2="0"/><line x1="900" y1="360" x2="400" y2="0"/><line x1="900" y1="360" x2="500" y2="0"/><line x1="900" y1="360" x2="600" y2="0"/><line x1="900" y1="360" x2="700" y2="0"/><line x1="900" y1="360" x2="800" y2="0"/><line x1="900" y1="360" x2="900" y2="0"/><line x1="900" y1="360" x2="1000" y2="0"/><line x1="900" y1="360" x2="1100" y2="0"/><line x1="900" y1="360" x2="1200" y2="0"/>
+        <line x1="900" y1="360" x2="0" y2="800"/><line x1="900" y1="360" x2="200" y2="800"/><line x1="900" y1="360" x2="400" y2="800"/><line x1="900" y1="360" x2="600" y2="800"/><line x1="900" y1="360" x2="800" y2="800"/><line x1="900" y1="360" x2="1000" y2="800"/><line x1="900" y1="360" x2="1200" y2="800"/>
+        <line x1="900" y1="360" x2="1200" y2="200"/><line x1="900" y1="360" x2="1200" y2="400"/><line x1="900" y1="360" x2="1200" y2="600"/>
+        <line x1="900" y1="360" x2="0" y2="200"/><line x1="900" y1="360" x2="0" y2="400"/><line x1="900" y1="360" x2="0" y2="600"/>
+      </g>
+    </svg>
+  </div>
+  <div class="halftone"></div>
   <div class="hero-content">
     <div class="hero-tag">Available for Opportunities</div>
     <h1 class="hero-name">Joshua<br><span>Chung</span></h1>
     <div class="hero-typewriter">
       &gt; <span id="typed-text" class="typed"></span><span id="cursor-blink">|</span>
     </div>
+    <!-- Manga character plate + speech bubble -->
+    <div style="margin-bottom:32px;display:flex;flex-direction:column;gap:28px;align-items:flex-start;">
+      <div class="char-plate">
+        <div class="char-plate-accent"></div>
+        <div class="char-plate-body">
+          <div class="char-plate-name">JOSHUA CHUNG</div>
+          <div class="char-plate-title">▸ Data Scientist · Athlete · Builder</div>
+        </div>
+      </div>
+      <div class="bubble bubble-typewriter" style="margin-left:16px;">
+        <span class="bub-text">I turn raw data into insights that actually matter. Let's build something!</span>
+      </div>
+    </div>
     <div class="hero-ctas">
       <a href="#projects" class="btn btn-primary">View My Work</a>
       <a href="#contact" class="btn btn-outline">Get In Touch</a>
     </div>
   </div>
+  <!-- floating manga SFX -->
+  <span class="manga-sfx" style="bottom:12%;right:5%;font-size:clamp(2rem,5vw,4.5rem);transform:rotate(12deg) skewX(4deg);">DATA!!</span>
 </section>
 
 <!-- STATS TICKER -->
@@ -446,11 +794,23 @@
     <div class="ticker-item"><strong>79%</strong> Recall Rate</div>
   </div>
 </div>
+<hr class="manga-divider"/>
 
 <!-- ABOUT -->
-<section id="about">
+<section id="about" style="position:relative;">
+  <div class="halftone" style="opacity:0.03;"></div>
+  <div class="panel-num">01</div>
   <div class="section-label">01 — About</div>
   <h2 class="section-title reveal">Stats student.<br>Data builder.</h2>
+
+  <!-- Manga intro bubble row -->
+  <div class="manga-intro reveal">
+    <div class="bubble bubble-thought" style="max-width:380px;">
+      Stats, ML, full-stack, D1 golf... I refuse to specialize in just one thing.
+      <div class="thought-dots"><span></span><span></span><span></span></div>
+    </div>
+    <div class="bubble-explosion" style="margin-left:12px;flex-shrink:0;">LEVEL<br>UP!</div>
+  </div>
   <div class="about-grid">
     <div class="about-text reveal">
       <p>I'm Joshua — a <strong>Statistics & Data Science student at UCSB</strong> who builds things that bridge raw data and real decisions. Whether it's a machine learning pipeline, an interactive dashboard, or a full-stack app, I care about making the technical legible.</p>
@@ -486,10 +846,22 @@
   </div>
 </section>
 
+<hr class="manga-divider"/>
+
 <!-- PROJECTS -->
-<section id="projects" style="max-width:1200px">
+<section id="projects" style="max-width:1200px;position:relative;">
+  <div class="panel-num">02</div>
   <div class="section-label">02 — Projects</div>
   <h2 class="section-title reveal">Selected Work</h2>
+  <!-- manga bubble intro for projects -->
+  <div class="manga-intro reveal" style="margin-bottom:40px;">
+    <div class="bubble bubble-shout" style="max-width:420px;">
+      These aren't just projects — they're deployed apps with real users!!
+    </div>
+    <div class="bubble" style="max-width:220px;margin-left:8px;">
+      Hover the previews to launch live demos ↗
+    </div>
+  </div>
   <div class="projects-grid">
 
     <!-- GAUCHO INSIGHTS -->
@@ -616,10 +988,19 @@
   </div>
 </section>
 
+<hr class="manga-divider"/>
+
 <!-- EXPERIENCE -->
-<section id="experience">
+<section id="experience" style="position:relative;">
+  <div class="panel-num">03</div>
   <div class="section-label">03 — Experience</div>
   <h2 class="section-title reveal">Where I've Worked</h2>
+  <div class="manga-intro reveal">
+    <div class="bubble" style="max-width:360px;">
+      From D1 golf to data journalism to startup engineering — I don't do boring.
+    </div>
+    <span class="manga-sfx" style="position:relative;font-size:2.5rem;opacity:0.35;transform:rotate(-5deg) skewX(-4deg);animation:wobble 4s ease-in-out infinite;">GRIND!</span>
+  </div>
   <div class="exp-list">
 
     <div class="exp-item reveal">
@@ -651,10 +1032,19 @@
   </div>
 </section>
 
+<hr class="manga-divider"/>
+
 <!-- ATHLETICS -->
-<section id="athletics">
+<section id="athletics" style="position:relative;">
+  <div class="panel-num">04</div>
   <div class="section-label">04 — Athletics</div>
   <h2 class="section-title reveal">Beyond the Data</h2>
+  <div class="manga-intro reveal">
+    <div class="bubble-explosion" style="flex-shrink:0;">TOP<br>52<br>NATION</div>
+    <div class="bubble" style="max-width:360px;margin-left:20px;">
+      Ranked #52 nationally entering UCSB. Started varsity as a freshman. Big West Championships. 75.9 scoring average. Numbers don't lie.
+    </div>
+  </div>
   <div class="athletics-card reveal">
     <div>
       <div class="athletics-title">Division I Golf</div>
@@ -678,10 +1068,18 @@
   </div>
 </section>
 
+<hr class="manga-divider"/>
+
 <!-- CONTACT -->
-<section id="contact">
+<section id="contact" style="position:relative;">
+  <div class="panel-num">05</div>
   <div class="section-label">05 — Contact</div>
-  <div class="contact-inner reveal">
+  <div class="manga-intro reveal">
+    <div class="bubble bubble-shout" style="max-width:420px;margin-bottom:8px;">
+      To be continued... but only if you reach out first!!
+    </div>
+  </div>
+  <div class="contact-inner reveal manga-panel manga-ruled">
     <div>
       <h2 class="contact-heading">Let's<br><span>build</span><br>together.</h2>
       <p class="contact-desc">Open to internships, full-time roles, and research opportunities in data science, ML engineering, and analytics. Based in Santa Barbara — happy to relocate.</p>
@@ -726,7 +1124,10 @@
 </section>
 
 <footer>
-  <span>© 2026 Joshua Chung · Statistics & Data Science · UCSB · GPA 3.3</span>
+  <div style="display:flex;align-items:center;gap:16px;">
+    <span>© 2026 Joshua Chung · Statistics & Data Science · UCSB · GPA 3.3</span>
+    <span style="font-family:'Syne',sans-serif;font-weight:900;font-size:0.7rem;color:var(--bg);background:var(--accent);padding:3px 10px;letter-spacing:0.15em;">— END —</span>
+  </div>
   <div style="display:flex;gap:24px;align-items:center;">
     <a href="https://github.com/josh11100" target="_blank" style="color:var(--muted);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--muted)'">GitHub</a>
     <a href="https://www.linkedin.com/in/joshua-chung858/" target="_blank" style="color:var(--muted);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--muted)'">LinkedIn</a>
@@ -940,6 +1341,96 @@ window.addEventListener('scroll', () => {
         a.style.color = a.getAttribute('href') === '#' + s.id ? 'var(--accent)' : '';
       });
     }
+  });
+});
+
+// ─── BUBBLE ANIMATION SYSTEM ─────────────────────────────────────────────────
+
+// Typewriter text for bubble-typewriter elements
+function runBubbleTypewriter(el) {
+  const textSpan = el.querySelector('.bub-text');
+  if (!textSpan || textSpan.dataset.typed) return;
+  textSpan.dataset.typed = '1';
+  const fullText = textSpan.textContent.trim();
+  textSpan.textContent = '';
+  textSpan.style.opacity = '1';
+  let i = 0;
+  function typeChar() {
+    if (i < fullText.length) {
+      const span = document.createElement('span');
+      span.className = 'bub-char';
+      span.style.animationDelay = '0s';
+      span.textContent = fullText[i];
+      textSpan.appendChild(span);
+      i++;
+      // variable speed: slower at punctuation for dramatic effect
+      const ch = fullText[i - 1];
+      const delay = (ch === '.' || ch === '!' || ch === '?') ? 200 :
+                    (ch === ',') ? 100 : 38;
+      setTimeout(typeChar, delay);
+    }
+  }
+  // slight delay before typing starts (after bubble pops in)
+  setTimeout(typeChar, 480);
+}
+
+// Staggered animation for bubbles within a .manga-intro container
+function animateMangaIntro(container, baseDelay) {
+  const items = container.querySelectorAll(
+    '.bubble, .bubble-shout, .bubble-thought, .bubble-explosion, .char-plate'
+  );
+  items.forEach((item, i) => {
+    setTimeout(() => {
+      item.classList.add('b-visible');
+      if (item.classList.contains('bubble-typewriter')) {
+        runBubbleTypewriter(item);
+      }
+    }, baseDelay + i * 160);
+  });
+}
+
+// IntersectionObserver for all manga intro blocks
+const bubbleObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const container = entry.target;
+      if (container.dataset.bubbleDone) return;
+      container.dataset.bubbleDone = '1';
+      animateMangaIntro(container, 80);
+      bubbleObserver.unobserve(container);
+    }
+  });
+}, { threshold: 0.25 });
+
+document.querySelectorAll('.manga-intro').forEach(c => bubbleObserver.observe(c));
+
+// Hero bubbles — trigger on page load with slight delay
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    const heroPlate = document.querySelector('.hero-content .char-plate');
+    if (heroPlate) {
+      heroPlate.classList.add('b-visible');
+    }
+    setTimeout(() => {
+      const heroBubble = document.querySelector('.hero-content .bubble');
+      if (heroBubble) {
+        heroBubble.classList.add('b-visible');
+        if (heroBubble.classList.contains('bubble-typewriter')) {
+          runBubbleTypewriter(heroBubble);
+        }
+      }
+    }, 320);
+  }, 600);
+});
+
+// Hover sound-effect: brief scale pulse on all bubbles
+document.querySelectorAll('.bubble, .bubble-shout, .bubble-thought').forEach(b => {
+  b.addEventListener('mouseenter', () => {
+    b.style.transition = 'transform 0.15s cubic-bezier(0.34,1.5,0.64,1)';
+    b.style.transform = 'scale(1.05) rotate(-1deg)';
+  });
+  b.addEventListener('mouseleave', () => {
+    b.style.transform = 'scale(1) rotate(0deg)';
   });
 });
 </script>
