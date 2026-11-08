@@ -736,10 +736,10 @@
   <a href="#hero" class="nav-logo">JC.</a>
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
-    <li><a href="#projects">Work</a></li>
     <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Work</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="/resume.pdf" target="_blank" style="color:var(--accent);border:1px solid rgba(0,221,180,0.3);padding:6px 14px;">Resume ↗</a></li>
+    <li><a href="resume.pdf" target="_blank" style="color:var(--accent);border:1px solid rgba(0,221,180,0.3);padding:6px 14px;">Resume ↗</a></li>
   </ul>
 </nav>
 
@@ -790,7 +790,7 @@
 <!-- STATS TICKER -->
 <div class="stats-bar">
   <div class="ticker-inner" id="ticker">
-    <div class="ticker-item"><strong>3.3</strong> GPA</div>
+    <div class="ticker-item"><strong>3.5</strong> Major GPA</div>
     <div class="ticker-item"><strong>0.847</strong> ROC-AUC</div>
     <div class="ticker-item"><strong>70,000+</strong> Records Merged</div>
     <div class="ticker-item"><strong>100+</strong> Active Users</div>
@@ -798,8 +798,10 @@
     <div class="ticker-item"><strong>#52</strong> National Rank</div>
     <div class="ticker-item"><strong>D1</strong> Golf Athlete</div>
     <div class="ticker-item"><strong>79%</strong> Recall Rate</div>
+    <div class="ticker-item"><strong>11</strong> Data Sources Integrated</div>
+    <div class="ticker-item"><strong>11K+</strong> Customers Analyzed</div>
     <!-- duplicate for seamless loop -->
-    <div class="ticker-item"><strong>3.3</strong> GPA</div>
+    <div class="ticker-item"><strong>3.5</strong> Major GPA</div>
     <div class="ticker-item"><strong>0.847</strong> ROC-AUC</div>
     <div class="ticker-item"><strong>70,000+</strong> Records Merged</div>
     <div class="ticker-item"><strong>100+</strong> Active Users</div>
@@ -807,6 +809,8 @@
     <div class="ticker-item"><strong>#52</strong> National Rank</div>
     <div class="ticker-item"><strong>D1</strong> Golf Athlete</div>
     <div class="ticker-item"><strong>79%</strong> Recall Rate</div>
+    <div class="ticker-item"><strong>11</strong> Data Sources Integrated</div>
+    <div class="ticker-item"><strong>11K+</strong> Customers Analyzed</div>
   </div>
 </div>
 <hr class="manga-divider"/>
@@ -829,8 +833,8 @@
   <div class="about-grid">
     <div class="about-text reveal">
       <p>I'm Joshua — a <strong>Statistics & Data Science student at UCSB</strong> who builds things that bridge raw data and real decisions. Whether it's a machine learning pipeline, an interactive dashboard, or a full-stack app, I care about making the technical legible.</p>
-      <p>Currently working as a <strong>Data Analyst at the Daily Nexus</strong>, translating public datasets into stories that matter. I'm a former <strong>Division I golfer</strong> — which means I know how to compete under pressure and show up consistently.</p>
-      <p>I'm looking for <strong>internship and full-time roles</strong> in data science, ML engineering, or analytics. Let's build something meaningful.</p>
+      <p>Right now I'm an <strong>ML Engineer Intern at Scout</strong>, evaluating an LLM-assisted classifier and auditing the data behind its metrics. Last summer I was a <strong>Data Engineering Intern at Skip The Groomer</strong>, where I integrated 11 sales and ad sources and built a multi-agent LLM data platform. I'm also a former <strong>Division I golfer</strong> — which means I know how to compete under pressure and show up consistently.</p>
+      <p>I graduate in June 2027 and I'm looking for <strong>full-time new-grad roles</strong> in data science, ML engineering, or analytics. Let's build something meaningful.</p>
     </div>
     <div class="about-skills reveal">
       <div class="skill-row">
@@ -857,7 +861,83 @@
         <div class="skill-meta"><span>R / Statistical Analysis</span><span>82%</span></div>
         <div class="skill-bar"><div class="skill-fill" data-w="0.82"></div></div>
       </div>
+      <div class="skill-row">
+        <div class="skill-meta"><span>LLM Agents / Evaluation</span><span>85%</span></div>
+        <div class="skill-bar"><div class="skill-fill" data-w="0.85"></div></div>
+      </div>
     </div>
+  </div>
+</section>
+
+<hr class="manga-divider"/>
+
+<!-- EXPERIENCE -->
+<section id="experience" style="position:relative;">
+  <div class="panel-num">02</div>
+  <div class="section-label">02 — Experience</div>
+  <h2 class="section-title reveal">Where I've Worked</h2>
+  <div class="manga-intro reveal">
+    <div class="bubble">
+      Golf, code, data, journalism. Different arenas, same obsession: perform at the top.
+    </div>
+    <span class="manga-sfx" style="position:relative;font-size:2.5rem;opacity:0.35;transform:rotate(-5deg) skewX(-4deg);animation:wobble 4s ease-in-out infinite;">GRIND!</span>
+  </div>
+  <div class="exp-list">
+
+    <div class="exp-item reveal">
+      <div class="exp-date">Sept 2026<br>— Present</div>
+      <div>
+        <div class="exp-role">ML Engineer Intern · Model Evaluation &amp; Data Quality</div>
+        <div class="exp-company">Scout · AI Shopping Assistant · Remote</div>
+        <ul class="exp-points">
+          <li>Evaluated an LLM stock classifier in Python across 10+ retailers; found one retailer’s precision rested on only 49 of 331 records, then rebuilt scoring on same-page labels: 174 records scored (drop rate 85% → 47%) at 1.00 precision.</li>
+          <li>Audited the evaluation set and traced its bias to the source: 579 records came from just 9 products, and some labels came from the parser under test. Built a re-capture tool so labels and predictions share one page.</li>
+          <li>Diagnosed a silent data-source change by re-collecting live pages: a retailer had removed the low-stock text the model relied on, so the metric was flagged as unmeasurable instead of reported as misleading.</li>
+          <li>Compared two extraction methods on ~200 pages across 6 retailers; structured page data misread stock in 31% of Nordstrom records, ruling it out for stock alerts.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item reveal">
+      <div class="exp-date">June 2026<br>— Sept 2026</div>
+      <div>
+        <div class="exp-role">Data Engineering Intern · AI &amp; Automation</div>
+        <div class="exp-company">Skip The Groomer · San Diego, CA</div>
+        <ul class="exp-points">
+          <li>Forecasted stockouts and reorder-by dates from weighted 7/28/90-day sales velocity and supplier lead times, blocking rather than guessing when lead times were unknown.</li>
+          <li>Integrated 11 sources (Amazon, Walmart.com, Shopify, TikTok Shop, etc.) via Python ETL pipelines with data contracts and a 90-check CI validator; reconciliation exposed ~50% under-reported ad spend and TACoS overstated ~28×, leading the team to cut and reallocate ad spend.</li>
+          <li>Architected a multi-agent LLM data platform (15 Claude routines, event-chained) feeding a 12-page dashboard whose alerts drove repeated inventory fixes, including a SKU overstated ~24×.</li>
+          <li>Ran cohort analysis on 11K+ customers, isolating a 78% one-time-buyer segment with no win-back flow, which led to a win-back campaign.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item reveal">
+      <div class="exp-date">Jan 2026<br>— Present</div>
+      <div>
+        <div class="exp-role">Data Analyst</div>
+        <div class="exp-company">Daily Nexus Data Team · Santa Barbara, CA</div>
+        <ul class="exp-points">
+          <li>Cleaned and analyzed public datasets on housing, campus trends, and local policy using statistical methods.</li>
+          <li>Built reusable Python pipelines to automate ingestion and formatting of recurring public records datasets.</li>
+          <li>Collaborated with editors to translate findings into interactive visualizations for non-technical audiences.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item reveal">
+      <div class="exp-date">June 2024<br>— Sept 2024</div>
+      <div>
+        <div class="exp-role">Full-Stack Developer Intern</div>
+        <div class="exp-company">ZFaceMelon Startup</div>
+        <ul class="exp-points">
+          <li>Designed normalized PostgreSQL schemas and automated ETL pipelines for large-scale datasets.</li>
+          <li>Built a secure subscription and authentication system using Stripe + Flask.</li>
+          <li>Developed backend REST APIs for scalable multi-tier user authorization in production.</li>
+        </ul>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -865,8 +945,8 @@
 
 <!-- PROJECTS -->
 <section id="projects" style="max-width:1200px;position:relative;">
-  <div class="panel-num">02</div>
-  <div class="section-label">02 — Projects</div>
+  <div class="panel-num">03</div>
+  <div class="section-label">03 — Projects</div>
   <h2 class="section-title reveal">Selected Work</h2>
   <!-- manga bubble intro for projects -->
   <div class="manga-intro reveal" style="margin-bottom:40px;">
@@ -927,7 +1007,7 @@
           <div class="preview-dot"></div>
           <div class="preview-dot"></div>
           <div class="preview-dot"></div>
-          <div class="preview-url">churn-predictor-kzezwgyyfc7wsncj9ie6m.streamlit.app</div>
+          <div class="preview-url">churn-predictor-kzezwgvyyfc7wsncj9ie6m.streamlit.app</div>
         </div>
         <div class="preview-frame-wrap" onclick="window.open('https://churn-predictor-kzezwgvyyfc7wsncj9ie6m.streamlit.app/','_blank')">
           <iframe src="https://churn-predictor-kzezwgvyyfc7wsncj9ie6m.streamlit.app/?embed=true" loading="lazy" title="ChurnIQ" scrolling="no"></iframe>
@@ -1005,50 +1085,6 @@
 
 <hr class="manga-divider"/>
 
-<!-- EXPERIENCE -->
-<section id="experience" style="position:relative;">
-  <div class="panel-num">03</div>
-  <div class="section-label">03 — Experience</div>
-  <h2 class="section-title reveal">Where I've Worked</h2>
-  <div class="manga-intro reveal">
-    <div class="bubble">
-      Golf, code, data, journalism. Different arenas, same obsession: perform at the top.
-    </div>
-    <span class="manga-sfx" style="position:relative;font-size:2.5rem;opacity:0.35;transform:rotate(-5deg) skewX(-4deg);animation:wobble 4s ease-in-out infinite;">GRIND!</span>
-  </div>
-  <div class="exp-list">
-
-    <div class="exp-item reveal">
-      <div class="exp-date">Jan 2026<br>— Present</div>
-      <div>
-        <div class="exp-role">Data Analyst</div>
-        <div class="exp-company">Daily Nexus Data Team · Santa Barbara, CA</div>
-        <ul class="exp-points">
-          <li>Cleaned and analyzed public datasets on housing, campus trends, and local policy using statistical methods.</li>
-          <li>Built reusable Python pipelines to automate ingestion and formatting of recurring public records datasets.</li>
-          <li>Collaborated with editors to translate findings into interactive visualizations for non-technical audiences.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="exp-item reveal">
-      <div class="exp-date">June 2024<br>— Sept 2024</div>
-      <div>
-        <div class="exp-role">Full-Stack Developer Intern</div>
-        <div class="exp-company">ZFaceMelon Startup</div>
-        <ul class="exp-points">
-          <li>Designed normalized PostgreSQL schemas and automated ETL pipelines for large-scale datasets.</li>
-          <li>Built a secure subscription and authentication system using Stripe + Flask.</li>
-          <li>Developed backend REST APIs for scalable multi-tier user authorization in production.</li>
-        </ul>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<hr class="manga-divider"/>
-
 <!-- ATHLETICS -->
 <section id="athletics" style="position:relative;">
   <div class="panel-num">04</div>
@@ -1097,7 +1133,7 @@
   <div class="contact-inner reveal manga-panel manga-ruled">
     <div>
       <h2 class="contact-heading">Let's<br><span>build</span><br>together.</h2>
-      <p class="contact-desc">Open to internships, full-time roles, and research opportunities in data science, ML engineering, and analytics. Based in Santa Barbara — happy to relocate.</p>
+      <p class="contact-desc">Open to full-time new-grad roles starting 2027 in data science, ML engineering, and analytics. Based in Santa Barbara — happy to relocate.</p>
       <div class="contact-links">
         <a href="https://github.com/josh11100" target="_blank" class="contact-link">
           <span class="contact-link-icon">◆</span>
@@ -1128,7 +1164,7 @@
       </div>
       <div class="contact-info-item">
         <span class="contact-info-label">GPA</span>
-        <span class="contact-info-val">3.3 · Big West Commissioner's Honors</span>
+        <span class="contact-info-val">3.5 Major · Big West Commissioner's Honors</span>
       </div>
       <div class="contact-info-item">
         <span class="contact-info-label">Phone</span>
@@ -1140,13 +1176,13 @@
 
 <footer>
   <div style="display:flex;align-items:center;gap:16px;">
-    <span>© 2026 Joshua Chung · Statistics & Data Science · UCSB · GPA 3.3</span>
+    <span>© 2026 Joshua Chung · Statistics & Data Science · UCSB · Major GPA 3.5</span>
     <span style="font-family:'Syne',sans-serif;font-weight:900;font-size:0.7rem;color:var(--bg);background:var(--accent);padding:3px 10px;letter-spacing:0.15em;">— END —</span>
   </div>
   <div style="display:flex;gap:24px;align-items:center;">
     <a href="https://github.com/josh11100" target="_blank" style="color:var(--muted);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--muted)'">GitHub</a>
     <a href="https://www.linkedin.com/in/joshua-chung858/" target="_blank" style="color:var(--muted);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--muted)'">LinkedIn</a>
-    <a href="/resume.pdf" target="_blank" style="padding:8px 20px;background:var(--accent);color:var(--bg);text-decoration:none;font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;clip-path:polygon(0 0,calc(100% - 7px) 0,100% 7px,100% 100%,0 100%);">↓ Resume</a>
+    <a href="resume.pdf" target="_blank" style="padding:8px 20px;background:var(--accent);color:var(--bg);text-decoration:none;font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;clip-path:polygon(0 0,calc(100% - 7px) 0,100% 7px,100% 100%,0 100%);">↓ Resume</a>
   </div>
 </footer>
 
@@ -1171,8 +1207,8 @@ const phrases = [
   'Statistics & Data Science @ UCSB',
   'ML Engineer & Pipeline Builder',
   'Division I Golfer',
-  'Data Journalist @ Daily Nexus',
-  'Available for 2026 Internships'
+  'ML Engineer Intern @ Scout',
+  'Open to 2027 New-Grad Roles'
 ];
 let pi = 0, ci = 0, deleting = false;
 const el = document.getElementById('typed-text');
